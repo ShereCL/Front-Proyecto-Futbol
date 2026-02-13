@@ -1,0 +1,87 @@
+<ion-content class="matches-content">
+  <div class="background-overlay"></div>
+  <div class="matches-container">
+    <!-- Header Section -->
+    <div class="header-section">
+      <div class="icon-container">
+        <ion-icon name="football-outline" class="header-icon"></ion-icon>
+      </div>
+      <h1 class="page-title">Partidos de la Jornada</h1>
+      <p class="page-subtitle">Sigue los partidos en vivo</p>
+    </div>
+    <!-- Matches List -->
+    <div class="matches-list" *ngIf="!loading; else loadingTpl">
+      <div class="match-card" *ngFor="let match of matches">
+        <div class="match-header">
+          <ion-badge
+            [color]="getStatusColor(match.status)"
+            class="status-badge"
+          >
+            {{ getStatusText(match.status) }}
+          </ion-badge>
+          <span class="match-minute" *ngIf="match.status === 'live'">
+            <ion-icon name="time-outline"></ion-icon>
+            {{ match.minute }}'
+          </span>
+        </div>
+        <div class="match-body">
+          <div class="team home-team">
+            <img
+              [src]="getTeamShield(match.home)"
+              [alt]="match.home"
+              class="team-shield"
+              (error)="onImageError($event)"
+            />
+            <div class="team-info">
+              <div class="team-name">{{ match.home }}</div>
+              <div class="team-score">{{ match.homeScore }}</div>
+            </div>
+          </div>
+          <div class="match-separator">
+            <span class="vs-text">VS</span>
+          </div>
+          <div class="team away-team">
+            <div class="team-info">
+              <div class="team-score">{{ match.awayScore }}</div>
+              <div class="team-name">{{ match.away }}</div>
+            </div>
+            <img
+              [src]="getTeamShield(match.away)"
+              [alt]="match.away"
+              class="team-shield"
+              (error)="onImageError($event)"
+            />
+          </div>
+        </div>
+        <div class="match-footer" *ngIf="match.status !== 'finished'">
+          <ion-button
+            size="small"
+            fill="clear"
+            class="bet-button"
+            (click)="onBet(match)"
+          >
+            <ion-icon name="cash-outline" slot="start"></ion-icon>
+            Apostar
+          </ion-button>
+        </div>
+        <!-- posible implementación de eventos como tarjetas y gole, lo no tengo claro -->
+      </div>
+      <div class="empty-state" *ngIf="matches.length === 0">
+        <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+        <p>No hay partidos disponibles</p>
+      </div>
+    </div>
+    <!-- Loading Template -->
+    <ng-template #loadingTpl>
+      <div class="loading-container">
+        <div class="loading-card">
+          <ion-spinner name="crescent" class="custom-spinner"></ion-spinner>
+          <p class="loading-text">Cargando partidos...</p>
+        </div>
+      </div>
+    </ng-template>
+    <!-- Decorative Circles -->
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+  </div>
+</ion-content>

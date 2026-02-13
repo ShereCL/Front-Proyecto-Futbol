@@ -1,0 +1,91 @@
+<!-- src/app/pages/login.page.html -->
+<ion-content class="login-content">
+  <div class="background-overlay"></div>
+
+  <div class="login-container">
+    <!-- Logo y header -->
+    <div class="header-section">
+      <div class="logo-container">
+        <img
+          src="https://api.dicebear.com/7.x/bottts/svg?seed=laliga-app&backgroundColor=b6e3f4,c0aede,d1d4f9"
+          alt="LaLiga Bets"
+          class="logo-avatar"
+        />
+      </div>
+      <h1 class="app-title">LaLiga Bets</h1>
+      <p class="app-subtitle">Apuesta en tu liga favorita</p>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form-card">
+      <h2 class="form-title">Iniciar Sesión</h2>
+
+      <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
+        <div class="input-group">
+          <ion-item class="custom-input" lines="none">
+            <ion-icon
+              name="mail-outline"
+              slot="start"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Correo electrónico"
+              class="input-field"
+            >
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div class="input-group">
+          <ion-item class="custom-input" lines="none">
+            <ion-icon
+              name="lock-closed-outline"
+              slot="start"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              type="password"
+              formControlName="password"
+              placeholder="Contraseña"
+              class="input-field"
+            >
+            </ion-input>
+          </ion-item>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <span>{{ error }}</span>
+        </div>
+
+        <ion-button
+          expand="block"
+          type="submit"
+          class="login-button"
+          [disabled]="loginForm.invalid"
+        >
+          <span>Entrar</span>
+          <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
+        </ion-button>
+      </form>
+
+      <div class="forgot-password">
+        <a href="#">¿Olvidaste tu contraseña?</a>
+      </div>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-section">
+      <p class="register-text">¿No tienes cuenta?</p>
+      <ion-button routerLink="/register" fill="outline" class="register-button">
+        Crear cuenta
+      </ion-button>
+    </div>
+
+    <!-- Decoración -->
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+  </div>
+</ion-content>

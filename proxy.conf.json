@@ -1,0 +1,8 @@
+{
+  "/api": {
+    "target": "https://back-proyecto-futbol-ajnu52uhl-sherezades-projects.vercel.app",
+    "secure": true,
+    "changeOrigin": true,
+    "logLevel": "debug"
+  }
+}

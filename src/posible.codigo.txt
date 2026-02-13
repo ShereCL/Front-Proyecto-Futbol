@@ -1,0 +1,35 @@
+        <div>
+          <div
+            class="match-events"
+            *ngIf="match.events && match.events.length > 0"
+          >
+            <div class="events-header">
+              <span>Eventos del partido</span>
+            </div>
+            <div class="events-list">
+              <div
+                class="event-item"
+                *ngFor="let event of match.events"
+                [class.home-event]="event.team === match.home"
+                [class.away-event]="event.team === match.away"
+              >
+                <div class="event-timeline">
+                  <span class="timeline-dot"></span>
+                  <span class="timeline-line"></span>
+                </div>
+                <div class="event-content">
+                  <div class="event-icon">
+                    <ion-icon [name]="getEventIcon(event.type)"></ion-icon>
+                  </div>
+                  <div class="event-details">
+                    <span class="event-player">{{ event.player }}</span>
+                    <span class="event-type"
+                      >{{ getEventText(event.type) }}</span
+                    >
+                  </div>
+                  <div class="event-minute">{{ event.minute }}'</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>

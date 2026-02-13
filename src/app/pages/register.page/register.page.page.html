@@ -1,0 +1,145 @@
+<!-- src/app/pages/register.page.html -->
+<ion-content class="register-content">
+  <div class="background-overlay"></div>
+
+  <div class="register-container">
+    <!-- Logo y header -->
+    <div class="header-section">
+      <div class="logo-container">
+        <img [src]="avatarPreview" alt="Avatar preview" class="logo-avatar" />
+      </div>
+      <h1 class="app-title">LaLiga Bets</h1>
+      <p class="app-subtitle">Únete a la comunidad de apostadores</p>
+    </div>
+
+    <!-- Formulario -->
+    <div class="form-card">
+      <h2 class="form-title">Crear Cuenta</h2>
+
+      <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+        <div class="input-group">
+          <ion-item class="custom-input" lines="none">
+            <ion-icon
+              name="person-outline"
+              slot="start"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              type="text"
+              formControlName="username"
+              placeholder="Nombre de usuario"
+              class="input-field"
+              (ionInput)="onUsernameChange()"
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            class="input-hint"
+            *ngIf="registerForm.get('username')?.touched && registerForm.get('username')?.errors?.['required']"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>El nombre de usuario es requerido</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <ion-item class="custom-input" lines="none">
+            <ion-icon
+              name="mail-outline"
+              slot="start"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              type="email"
+              formControlName="email"
+              placeholder="Correo electrónico"
+              class="input-field"
+              (ionInput)="onEmailChange()"
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            class="input-hint"
+            *ngIf="registerForm.get('email')?.touched && registerForm.get('email')?.errors?.['email']"
+          >
+            <ion-icon name="information-circle-outline"></ion-icon>
+            <span>Introduce un email válido</span>
+          </div>
+        </div>
+
+        <div class="input-group">
+          <ion-item class="custom-input" lines="none">
+            <ion-icon
+              name="lock-closed-outline"
+              slot="start"
+              class="input-icon"
+            ></ion-icon>
+            <ion-input
+              type="password"
+              formControlName="password"
+              placeholder="Contraseña (mín. 6 caracteres)"
+              class="input-field"
+            >
+            </ion-input>
+          </ion-item>
+          <div
+            class="password-strength"
+            *ngIf="registerForm.get('password')?.value"
+          >
+            <div class="strength-bar">
+              <div
+                class="strength-fill"
+                [class.weak]="getPasswordStrength() === 'weak'"
+                [class.medium]="getPasswordStrength() === 'medium'"
+                [class.strong]="getPasswordStrength() === 'strong'"
+              ></div>
+            </div>
+            <span
+              class="strength-text"
+              [class.weak]="getPasswordStrength() === 'weak'"
+              [class.medium]="getPasswordStrength() === 'medium'"
+              [class.strong]="getPasswordStrength() === 'strong'"
+              >{{ getPasswordStrengthText() }}</span
+            >
+          </div>
+        </div>
+
+        <div *ngIf="error" class="error-message">
+          <ion-icon name="alert-circle-outline"></ion-icon>
+          <span>{{ error }}</span>
+        </div>
+
+        <div class="terms-section">
+          <p class="terms-text">
+            Al registrarte, aceptas nuestros
+            <a href="#">Términos y Condiciones</a> y la
+            <a href="#">Política de Privacidad</a>
+          </p>
+        </div>
+
+        <ion-button
+          expand="block"
+          type="submit"
+          class="register-button"
+          [disabled]="registerForm.invalid"
+        >
+          <span>Crear Cuenta</span>
+          <ion-icon name="checkmark-circle-outline" slot="end"></ion-icon>
+        </ion-button>
+      </form>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer-section">
+      <p class="login-text">¿Ya tienes una cuenta?</p>
+      <ion-button routerLink="/login" fill="outline" class="login-button">
+        Iniciar Sesión
+      </ion-button>
+    </div>
+
+    <!-- Decoración -->
+    <div class="decoration-circle circle-1"></div>
+    <div class="decoration-circle circle-2"></div>
+    <div class="decoration-circle circle-3"></div>
+  </div>
+</ion-content>
