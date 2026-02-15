@@ -1,0 +1,207 @@
+<ion-header>
+  <ion-toolbar class="league-toolbar">
+    <ion-title>
+      <ion-icon name="trophy"></ion-icon>
+      LaLiga Clasificación
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="league-content">
+  <!-- Fondo de estadio -->
+  <div class="stadium-pattern">
+    <div class="trophy-glow"></div>
+  </div>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content
+      pullingIcon="chevron-down-circle-outline"
+      pullingText="Desliza para actualizar"
+      refreshingSpinner="crescent"
+      refreshingText="Actualizando..."
+    >
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <!-- Loading State -->
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-wrapper">
+      <div class="stadium-loader">
+        <div class="loader-ball">⚽</div>
+        <div class="loader-shadow"></div>
+      </div>
+      <p>Cargando clasificación...</p>
+    </div>
+  </div>
+
+  <!-- Standings Table -->
+  <div *ngIf="!loading" class="league-container">
+    <!-- Header decorativo -->
+    <div class="league-header">
+      <div class="trophy-container">
+        <ion-icon name="trophy" class="main-trophy"></ion-icon>
+        <div class="trophy-rays"></div>
+      </div>
+      <h2>TEMPORADA 2024/25</h2>
+      <p>Clasificación Oficial</p>
+    </div>
+
+    <ion-card class="standings-card">
+      <div class="card-top-accent"></div>
+
+      <ion-card-header>
+        <ion-card-title class="standings-title">
+          <ion-icon name="podium-outline"></ion-icon>
+          <span>Tabla de Posiciones</span>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <!-- Table Header -->
+        <div class="table-header">
+          <div class="pos">#</div>
+          <div class="team">Equipo</div>
+          <div class="stat">PJ</div>
+          <div class="stat">PG</div>
+          <div class="stat">PE</div>
+          <div class="stat">PP</div>
+          <div class="stat">GF</div>
+          <div class="stat">GC</div>
+          <div class="stat">DIF</div>
+          <div class="pts">PTS</div>
+        </div>
+
+        <!-- Table Rows -->
+        <ion-list lines="none" class="standings-list">
+          <ion-item
+            *ngFor="let team of standings; let i = index"
+            (click)="viewTeamDetail(team)"
+            button
+            detail="false"
+            class="standing-item"
+            [class.champions]="team.position <= 4"
+            [class.europa]="team.position === 5"
+            [class.conference]="team.position === 6"
+            [class.relegation]="team.position >= 18"
+            [style.animation-delay]="i * 0.05 + 's'"
+          >
+            <div class="position-indicator"></div>
+
+            <div class="standing-row">
+              <!-- Position -->
+              <div class="pos">
+                <div
+                  class="position-badge"
+                  [class.top-position]="team.position <= 3"
+                >
+                  <span class="position-number">{{ team.position }}</span>
+                  <span class="position-icon"
+                    >{{ getPositionBadge(team.position) }}</span
+                  >
+                </div>
+              </div>
+
+              <!-- Team -->
+              <div class="team">
+                <div class="shield-wrapper">
+                  <img
+                    [src]="getTeamShield(team.name)"
+                    [alt]="team.name"
+                    (error)="onImageError($event)"
+                    class="team-shield-small"
+                  />
+                  <div class="shield-shine"></div>
+                </div>
+                <span class="team-name">{{ team.name }}</span>
+              </div>
+
+              <!-- Stats -->
+              <div class="stat">{{ team.pj }}</div>
+              <div class="stat win">{{ team.pg }}</div>
+              <div class="stat draw">{{ team.pe }}</div>
+              <div class="stat loss">{{ team.pp }}</div>
+              <div class="stat">{{ team.gf }}</div>
+              <div class="stat">{{ team.gc }}</div>
+              <div
+                class="stat diff"
+                [class.positive]="team.diferencia > 0"
+                [class.negative]="team.diferencia < 0"
+                [class.neutral]="team.diferencia === 0"
+              >
+                <span class="diff-value">
+                  {{ team.diferencia > 0 ? '+' + team.diferencia :
+                  team.diferencia }}
+                </span>
+              </div>
+
+              <!-- Points -->
+              <div class="pts">
+                <div class="points-badge">
+                  <strong>{{ team.pts }}</strong>
+                </div>
+              </div>
+            </div>
+
+            <ion-icon
+              name="chevron-forward-outline"
+              slot="end"
+              class="arrow-icon"
+            ></ion-icon>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Legend -->
+    <ion-card class="legend-card">
+      <div class="legend-accent"></div>
+      <ion-card-content>
+        <div class="legend-title">
+          <ion-icon name="information-circle-outline"></ion-icon>
+          <span>Clasificación UEFA</span>
+        </div>
+        <div class="legend">
+          <div class="legend-item champions">
+            <div class="legend-badge">
+              <ion-icon name="trophy"></ion-icon>
+            </div>
+            <div class="legend-text">
+              <strong>Champions League</strong>
+              <span>Posiciones 1-4</span>
+            </div>
+          </div>
+
+          <div class="legend-item europa">
+            <div class="legend-badge">
+              <ion-icon name="star"></ion-icon>
+            </div>
+            <div class="legend-text">
+              <strong>Europa League</strong>
+              <span>Posición 5</span>
+            </div>
+          </div>
+
+          <div class="legend-item conference">
+            <div class="legend-badge">
+              <ion-icon name="star-half"></ion-icon>
+            </div>
+            <div class="legend-text">
+              <strong>Conference League</strong>
+              <span>Posición 6</span>
+            </div>
+          </div>
+
+          <div class="legend-item relegation">
+            <div class="legend-badge">
+              <ion-icon name="arrow-down"></ion-icon>
+            </div>
+            <div class="legend-text">
+              <strong>Descenso</strong>
+              <span>Posiciones 18-20</span>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

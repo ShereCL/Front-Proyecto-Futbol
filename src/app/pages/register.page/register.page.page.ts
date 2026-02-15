@@ -1,4 +1,3 @@
-// src/app/pages/register.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
@@ -32,6 +31,14 @@ import {
   checkmarkCircleOutline,
   informationCircleOutline,
   footballOutline,
+  people,
+  shieldCheckmarkOutline,
+  documentTextOutline,
+  personAddOutline,
+  trophy,
+  statsChart,
+  heart,
+  logInOutline,
 } from 'ionicons/icons';
 
 @Component({
@@ -69,13 +76,21 @@ export class RegisterPagePage implements OnInit {
   ) {
     // Registrar iconos
     addIcons({
-      'person-outline': personOutline,
-      'mail-outline': mailOutline,
-      'lock-closed-outline': lockClosedOutline,
-      'alert-circle-outline': alertCircleOutline,
-      'checkmark-circle-outline': checkmarkCircleOutline,
-      'information-circle-outline': informationCircleOutline,
-      'football-outline': footballOutline,
+      people,
+      shieldCheckmarkOutline,
+      personOutline,
+      informationCircleOutline,
+      mailOutline,
+      lockClosedOutline,
+      alertCircleOutline,
+      documentTextOutline,
+      personAddOutline,
+      checkmarkCircleOutline,
+      trophy,
+      statsChart,
+      heart,
+      logInOutline,
+      footballOutline: footballOutline,
     });
 
     this.registerForm = this.fb.group({

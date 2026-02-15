@@ -18,7 +18,7 @@ export class AuthService {
     private avatarService: AvatarService,
   ) {}
 
-  /* Registro con avatar automático */
+  /* Registro con avatar desde dicebar */
   async register(
     username: string,
     email: string,
@@ -27,38 +27,50 @@ export class AuthService {
     const avatarUrl = this.avatarService.generateUserAvatar(username, email);
 
     // el back devuelve el token junto con el usuario
-    const user = await firstValueFrom(
-      this.http.post<User & { token: string }>(`${this.apiUrl}/api/register`, {
-        username,
-        email,
-        password,
-        avatarUrl,
-      }),
+    const response = await firstValueFrom(
+      this.http.post<{ token: string; user: User }>(
+        `${this.apiUrl}/api/register`,
+        {
+          username,
+          email,
+          password,
+          avatarUrl,
+        },
+      ),
     );
 
-    // Guardar token y datos del usuario en local storage
-    await Preferences.set({ key: 'token', value: user.token });
-    await Preferences.set({ key: 'user', value: JSON.stringify(user) });
+    // Guardar token
+    await Preferences.set({ key: 'token', value: response.token });
+    await Preferences.set({
+      key: 'user',
+      value: JSON.stringify(response.user),
+    });
 
-    return user;
+    return response.user;
   }
 
   /* Login */
   async login(email: string, password: string): Promise<User> {
-    const user = await firstValueFrom(
-      this.http.post<User & { token: string }>(`${this.apiUrl}/api/login`, {
-        email,
-        password,
-      }),
+    const response = await firstValueFrom(
+      this.http.post<{ token: string; user: User }>(
+        `${this.apiUrl}/api/login`,
+        {
+          email,
+          password,
+        },
+      ),
     );
 
     // Guardar token
-    await Preferences.set({ key: 'token', value: user.token });
+    await Preferences.set({ key: 'token', value: response.token });
 
-    // Guardar datos del usuario incluyendo avatar
-    await Preferences.set({ key: 'user', value: JSON.stringify(user) });
+    // Guardar solo el usuario
+    await Preferences.set({
+      key: 'user',
+      value: JSON.stringify(response.user),
+    });
 
-    return user;
+    return response.user; // devuelve solo el usuario
   }
 
   /* Logout */

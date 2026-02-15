@@ -4,7 +4,7 @@
 
 export const environment = {
   production: false,
-  apiUrl: 'https://back-proyecto-futbol.vercel.app',
+  apiUrl: 'http://localhost:3000',
 };
 
 /*

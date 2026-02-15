@@ -1,24 +1,52 @@
 <!-- src/app/pages/login.page.html -->
 <ion-content class="login-content">
-  <div class="background-overlay"></div>
+  <!-- Campo de fútbol animado de fondo -->
+  <div class="football-field-bg">
+    <div class="field-lines">
+      <div class="center-circle"></div>
+      <div class="halfway-line"></div>
+      <div class="penalty-area left"></div>
+      <div class="penalty-area right"></div>
+    </div>
+    <div class="floating-balls">
+      <div class="ball ball-1">⚽</div>
+      <div class="ball ball-2">⚽</div>
+      <div class="ball ball-3">⚽</div>
+    </div>
+  </div>
 
   <div class="login-container">
-    <!-- Logo y header -->
+    <!-- Logo y header con escudo estilo LaLiga -->
     <div class="header-section">
       <div class="logo-container">
-        <img
-          src="https://api.dicebear.com/7.x/bottts/svg?seed=laliga-app&backgroundColor=b6e3f4,c0aede,d1d4f9"
-          alt="LaLiga Bets"
-          class="logo-avatar"
-        />
+        <div class="shield-wrapper">
+          <div class="shield-bg"></div>
+          <img
+            src="https://api.dicebear.com/7.x/bottts/svg?seed=laliga-app&backgroundColor=b6e3f4,c0aede,d1d4f9"
+            alt="LaLiga Bets"
+            class="logo-avatar"
+          />
+          <div class="shine-effect"></div>
+        </div>
       </div>
-      <h1 class="app-title">LaLiga Bets</h1>
-      <p class="app-subtitle">Apuesta en tu liga favorita</p>
+      <h1 class="app-title">
+        <span class="title-la">LA</span>
+        <span class="title-liga">LIGA</span>
+        <span class="title-bets">BETS</span>
+      </h1>
+      <p class="app-subtitle">
+        <ion-icon name="trophy"></ion-icon>
+        Tu quiniela deportiva oficial
+      </p>
     </div>
 
-    <!-- Formulario -->
+    <!-- Formulario con estilo estadio -->
     <div class="form-card">
-      <h2 class="form-title">Iniciar Sesión</h2>
+      <div class="card-header-accent"></div>
+      <h2 class="form-title">
+        <ion-icon name="log-in-outline"></ion-icon>
+        Acceso al Estadio
+      </h2>
 
       <form [formGroup]="loginForm" (ngSubmit)="onLogin()">
         <div class="input-group">
@@ -66,26 +94,46 @@
           class="login-button"
           [disabled]="loginForm.invalid"
         >
-          <span>Entrar</span>
+          <ion-icon name="football-outline" slot="start"></ion-icon>
+          <span>Entrar al Campo</span>
           <ion-icon name="arrow-forward-outline" slot="end"></ion-icon>
         </ion-button>
       </form>
 
       <div class="forgot-password">
+        <ion-icon name="help-circle-outline"></ion-icon>
         <a href="#">¿Olvidaste tu contraseña?</a>
       </div>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer con stats -->
     <div class="footer-section">
-      <p class="register-text">¿No tienes cuenta?</p>
+      <div class="stats-banner">
+        <div class="stat-item">
+          <ion-icon name="people"></ion-icon>
+          <span>+10K</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <ion-icon name="football"></ion-icon>
+          <span>380</span>
+        </div>
+        <div class="stat-divider"></div>
+        <div class="stat-item">
+          <ion-icon name="trophy"></ion-icon>
+          <span>Live</span>
+        </div>
+      </div>
+      <p class="register-text">¿Primera vez en el estadio?</p>
       <ion-button routerLink="/register" fill="outline" class="register-button">
-        Crear cuenta
+        <ion-icon name="person-add-outline" slot="start"></ion-icon>
+        Únete Ahora
       </ion-button>
     </div>
 
-    <!-- Decoración -->
-    <div class="decoration-circle circle-1"></div>
-    <div class="decoration-circle circle-2"></div>
+    <!-- Partículas decorativas -->
+    <div class="decoration-particle particle-1">⚽</div>
+    <div class="decoration-particle particle-2">🏆</div>
+    <div class="decoration-particle particle-3">⭐</div>
   </div>
 </ion-content>

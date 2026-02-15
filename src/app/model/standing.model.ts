@@ -9,3 +9,9 @@ export interface Standing {
   gc: number;
   pts: number;
 }
+
+// Interfaz auxiliar para mostrar posición
+export interface StandingWithPosition extends Standing {
+  position: number;
+  diferencia: number;
+}

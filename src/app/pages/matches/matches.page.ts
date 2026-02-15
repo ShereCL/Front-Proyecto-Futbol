@@ -1,8 +1,9 @@
-// src/app/pages/matches.page/matches.page.ts
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SoccerService } from 'src/app/services/soccer.service';
 import { ShieldService } from 'src/app/services/shield.service';
+import { Match } from 'src/app/model/match.model';
+import { addIcons } from 'ionicons';
 import {
   IonContent,
   IonBadge,
@@ -10,8 +11,6 @@ import {
   IonIcon,
   IonSpinner,
 } from '@ionic/angular/standalone';
-import { Match } from 'src/app/model/match.model';
-import { addIcons } from 'ionicons';
 import {
   footballOutline,
   timeOutline,
@@ -21,7 +20,11 @@ import {
   ellipseOutline,
   swapHorizontalOutline,
   squareOutline,
+  radioOutline,
+  chevronForwardOutline,
+  checkmarkCircleOutline,
 } from 'ionicons/icons';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-matches',
@@ -37,29 +40,31 @@ export class MatchesPage implements OnInit {
   constructor(
     private soccerService: SoccerService,
     private shieldService: ShieldService,
+    private router: Router,
   ) {
     addIcons({
       footballOutline,
+      radioOutline,
       timeOutline,
-      cashOutline,
-      calendarOutline,
       listOutline,
+      chevronForwardOutline,
+      calendarOutline,
+      cashOutline,
       ellipseOutline,
       swapHorizontalOutline,
       squareOutline,
+      checkmarkCircleOutline,
     });
   }
 
   ngOnInit() {
     this.loadMatches();
-    // Refresco cada 20 segundos para ver cambios en vivo
     setInterval(() => this.loadMatches(), 20000);
   }
 
   loadMatches() {
     this.soccerService.getMatches().subscribe({
       next: (data) => {
-        // Agregar escudos a cada partido
         this.matches = data.map((match) => ({
           ...match,
           homeShield: this.shieldService.getShield(match.home),
@@ -74,21 +79,19 @@ export class MatchesPage implements OnInit {
     });
   }
 
-  // Devuelve color para el estado del partido (tengo que cmbiar estos colores )
   getStatusColor(status: string): string {
     switch (status) {
       case 'pending':
-        return 'medium';
+        return 'warning';
       case 'live':
         return 'danger';
       case 'finished':
-        return 'success';
+        return 'medium';
       default:
-        return 'light';
+        return 'medium';
     }
   }
 
-  // Devuelve texto del estado del partido
   getStatusText(status: string): string {
     switch (status) {
       case 'pending':
@@ -102,59 +105,68 @@ export class MatchesPage implements OnInit {
     }
   }
 
-  // Manejador para cuando se hace clic en apostar
   onBet(match: Match) {
     console.log('Apostar en partido:', match);
-    // en algun momento aqui la logica de las apuestas
   }
 
-  // Manejador para errores de carga de imagen
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/escudos/betis.png';
   }
 
-  /*Obtener icono según el tipo de evento
-  getEventIcon(eventType: string): string {
-    switch (eventType.toLowerCase()) {
+  getTeamShield(teamName: string): string {
+    return this.shieldService.getShield(teamName);
+  }
+
+  //Eventos
+  getEventIcon(type: string): string {
+    switch (type.toLowerCase()) {
       case 'goal':
         return 'football-outline';
       case 'yellow-card':
-      case 'yellowcard':
         return 'square-outline';
       case 'red-card':
-      case 'redcard':
         return 'square-outline';
       case 'substitution':
-      case 'substitute':
         return 'swap-horizontal-outline';
       default:
         return 'ellipse-outline';
     }
-  } 
+  }
 
-  // Obtener texto del evento
-  getEventText(eventType: string): string {
-    switch (eventType.toLowerCase()) {
+  getEventText(type: string): string {
+    switch (type.toLowerCase()) {
       case 'goal':
         return 'Gol';
       case 'yellow-card':
-      case 'yellowcard':
         return 'Tarjeta Amarilla';
       case 'red-card':
-      case 'redcard':
         return 'Tarjeta Roja';
       case 'substitution':
-      case 'substitute':
         return 'Cambio';
       default:
-        return eventType;
+        return type;
     }
-  }*/
+  }
 
-  //con este método obtengo el escudo del equipo
+  getEventColor(team: string, homeTeam: string): string {
+    return team === homeTeam ? 'warning' : 'success';
+  }
 
-  getTeamShield(teamName: string): string {
-    return this.shieldService.getShield(teamName);
+  goToMatchDetail(matchId: number) {
+    this.router.navigate(['/matches', matchId]);
+  }
+
+  getStatusIcon(status: string): string {
+    switch (status) {
+      case 'pending':
+        return 'time-outline';
+      case 'live':
+        return 'radio-outline';
+      case 'finished':
+        return 'checkmark-circle-outline';
+      default:
+        return 'ellipse-outline';
+    }
   }
 }

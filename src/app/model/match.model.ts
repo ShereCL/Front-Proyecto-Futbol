@@ -3,6 +3,9 @@ import { MatchEvent } from './match-event.model';
 export type MatchStatus = 'pending' | 'live' | 'finished';
 
 export interface Match {
+  matchday: any;
+  awayTeam: any;
+  homeTeam: any;
   awayShield: any;
   homeShield: any;
   id: number;

@@ -1,15 +1,8 @@
 import { Routes } from '@angular/router';
+import { authGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  {
-    path: '',
-    redirectTo: 'login', // primera pantalla al abrir la app
-    pathMatch: 'full',
-  },
-  {
-    path: 'home',
-    loadComponent: () => import('./home/home.page').then((m) => m.HomePage),
-  },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
     loadComponent: () =>
@@ -22,9 +15,55 @@ export const routes: Routes = [
         (m) => m.RegisterPagePage,
       ),
   },
+
   {
-    path: 'matches',
+    path: 'tabs',
+    canActivate: [authGuard],
     loadComponent: () =>
-      import('./pages/matches/matches.page').then((m) => m.MatchesPage),
+      import('./pages/tabs/tabs.page').then((m) => m.TabsPage),
+    children: [
+      {
+        path: '',
+        redirectTo: 'matches',
+        pathMatch: 'full',
+      },
+      {
+        path: 'matches',
+        loadComponent: () =>
+          import('./pages/matches/matches.page').then((m) => m.MatchesPage),
+      },
+      {
+        path: 'league',
+        loadComponent: () =>
+          import('./pages/league/league.page').then((m) => m.LeaguePage),
+      },
+      {
+        path: 'ranking',
+        loadComponent: () =>
+          import('./pages/ranking/ranking.page').then((m) => m.RankingPage),
+      },
+      {
+        path: 'profile',
+        loadComponent: () =>
+          import('./pages/profile/profile.page').then((m) => m.ProfilePage),
+      },
+    ],
   },
+
+  {
+    path: 'matches/:id',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/matches-detail/matches-detail.page').then(
+        (m) => m.MatchesDetailPage,
+      ),
+  },
+
+  {
+    path: 'home',
+    redirectTo: 'tabs/matches',
+    pathMatch: 'full',
+  },
+
+  { path: '**', redirectTo: 'tabs/matches' },
 ];

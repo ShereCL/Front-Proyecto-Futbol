@@ -1,5 +1,4 @@
-// src/app/pages/login.page.ts
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {
   FormsModule,
@@ -29,7 +28,14 @@ import {
   alertCircleOutline,
   arrowForwardOutline,
   footballOutline,
+  trophy,
+  logInOutline,
+  helpCircleOutline,
+  people,
+  personAddOutline,
+  football,
 } from 'ionicons/icons';
+import { Preferences } from '@capacitor/preferences';
 
 @Component({
   selector: 'app-login.page',
@@ -53,7 +59,7 @@ import {
     RouterLink,
   ],
 })
-export class LoginPagePage {
+export class LoginPagePage implements OnInit {
   loginForm: FormGroup;
   error: string | null = null;
 
@@ -64,17 +70,32 @@ export class LoginPagePage {
   ) {
     // Registrar iconos
     addIcons({
-      'mail-outline': mailOutline,
-      'lock-closed-outline': lockClosedOutline,
-      'alert-circle-outline': alertCircleOutline,
-      'arrow-forward-outline': arrowForwardOutline,
-      'football-outline': footballOutline,
+      trophy,
+      logInOutline,
+      mailOutline,
+      lockClosedOutline,
+      alertCircleOutline,
+      footballOutline,
+      arrowForwardOutline,
+      helpCircleOutline,
+      people,
+      football,
+      personAddOutline,
     });
 
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', Validators.required],
     });
+  }
+
+  // si el usuario ya esta logueado, lo redirige a la pagina de partidos
+  async ngOnInit() {
+    const { value: token } = await Preferences.get({ key: 'token' });
+
+    if (token) {
+      this.router.navigateByUrl('/matches', { replaceUrl: true });
+    }
   }
 
   async onLogin() {
@@ -84,7 +105,7 @@ export class LoginPagePage {
     try {
       await this.authService.login(email, password);
       // navegar a la pagina de partidos, la pagina principal
-      this.router.navigate(['/matches']);
+      this.router.navigate(['/tabs/matches']);
     } catch (error: any) {
       this.error = error.message || 'Error al iniciar sesión';
     }

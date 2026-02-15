@@ -1,28 +1,91 @@
 // src/app/pages/login.page.scss
 
 .login-content {
-  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  --background: linear-gradient(135deg, #00254d 0%, #004e92 50%, #00254d 100%);
   position: relative;
   overflow: hidden;
+}
 
-  .background-overlay {
+// Campo de fútbol animado de fondo
+.football-field-bg {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  opacity: 0.08;
+  z-index: 0;
+
+  .field-lines {
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background:
-      radial-gradient(
-        circle at 20% 80%,
-        rgba(255, 255, 255, 0.1) 0%,
-        transparent 50%
-      ),
-      radial-gradient(
-        circle at 80% 20%,
-        rgba(255, 255, 255, 0.1) 0%,
-        transparent 50%
-      );
-    z-index: 0;
+    width: 100%;
+    height: 100%;
+
+    .center-circle {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 200px;
+      height: 200px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+    }
+
+    .halfway-line {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      width: 3px;
+      height: 100%;
+      background: rgba(255, 255, 255, 0.3);
+    }
+
+    .penalty-area {
+      position: absolute;
+      width: 180px;
+      height: 280px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      top: 50%;
+      transform: translateY(-50%);
+
+      &.left {
+        left: 0;
+        border-right: none;
+      }
+
+      &.right {
+        right: 0;
+        border-left: none;
+      }
+    }
+  }
+
+  .floating-balls {
+    .ball {
+      position: absolute;
+      font-size: 2rem;
+      opacity: 0.15;
+      animation: floatBall 15s infinite ease-in-out;
+
+      &.ball-1 {
+        top: 10%;
+        left: 15%;
+        animation-delay: 0s;
+      }
+
+      &.ball-2 {
+        top: 60%;
+        right: 20%;
+        animation-delay: 5s;
+      }
+
+      &.ball-3 {
+        bottom: 15%;
+        left: 70%;
+        animation-delay: 10s;
+      }
+    }
   }
 }
 
@@ -32,116 +95,230 @@
   display: flex;
   flex-direction: column;
   min-height: 100vh;
-  padding: 2rem 1.5rem;
-  animation: fadeIn 0.6s ease-in-out;
+  padding: 2.5rem 1.5rem;
+  animation: fadeIn 0.8s ease-in-out;
 }
 
-// Header Section
+// Header Section con escudo
 .header-section {
   text-align: center;
-  margin-bottom: 2rem;
-  animation: slideDown 0.8s ease-out;
+  margin-bottom: 2.5rem;
+  animation: slideDown 1s ease-out;
 
   .logo-container {
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem;
 
-    .logo-avatar {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: rgba(255, 255, 255, 0.2);
-      padding: 10px;
-      box-shadow:
-        0 8px 32px rgba(0, 0, 0, 0.2),
-        0 0 0 4px rgba(255, 255, 255, 0.3);
-      animation: bounce 2s infinite;
-      transition: transform 0.3s ease;
+    .shield-wrapper {
+      position: relative;
+      width: 140px;
+      height: 160px;
+      margin: 0 auto;
 
-      &:hover {
-        transform: scale(1.05);
+      .shield-bg {
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 140px;
+        height: 160px;
+        background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+        clip-path: polygon(
+          50% 0%,
+          100% 20%,
+          100% 80%,
+          50% 100%,
+          0% 80%,
+          0% 20%
+        );
+        box-shadow:
+          0 10px 40px rgba(255, 107, 53, 0.4),
+          0 0 0 4px rgba(255, 255, 255, 0.2),
+          0 0 0 8px rgba(255, 107, 53, 0.3);
+        animation: shieldPulse 3s ease-in-out infinite;
       }
-    }
 
-    .logo-icon {
-      font-size: 4rem;
-      color: #fff;
-      filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.2));
-      animation: bounce 2s infinite;
+      .logo-avatar {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        width: 90px;
+        height: 90px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.95);
+        padding: 12px;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+        z-index: 2;
+        transition: transform 0.3s ease;
+
+        &:hover {
+          transform: translate(-50%, -50%) scale(1.05) rotate(5deg);
+        }
+      }
+
+      .shine-effect {
+        position: absolute;
+        top: 0;
+        left: -100%;
+        width: 50%;
+        height: 100%;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.3),
+          transparent
+        );
+        animation: shine 4s infinite;
+        z-index: 3;
+        pointer-events: none;
+      }
     }
   }
 
   .app-title {
-    font-size: 2.5rem;
-    font-weight: 800;
-    color: #fff;
-    margin: 0;
-    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
-    letter-spacing: -1px;
+    font-size: 2.8rem;
+    font-weight: 900;
+    margin: 0 0 0.5rem 0;
+    text-shadow:
+      0 4px 8px rgba(0, 0, 0, 0.4),
+      0 0 20px rgba(255, 107, 53, 0.3);
+    letter-spacing: 2px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+
+    .title-la {
+      color: #fff;
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .title-liga {
+      color: #fff;
+    }
+
+    .title-bets {
+      color: #ff6b35;
+      font-size: 0.6em;
+      font-weight: 800;
+      padding: 0.2em 0.5em;
+      background: rgba(255, 107, 53, 0.2);
+      border: 2px solid #ff6b35;
+      border-radius: 8px;
+      text-shadow: none;
+    }
   }
 
   .app-subtitle {
     font-size: 1rem;
     color: rgba(255, 255, 255, 0.9);
-    margin: 0.5rem 0 0 0;
-    font-weight: 300;
+    margin: 0;
+    font-weight: 400;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+
+    ion-icon {
+      color: #f7931e;
+      font-size: 1.2rem;
+      animation: bounce 2s infinite;
+    }
   }
 }
 
-// Form Card
+// Form Card estilo estadio VIP
 .form-card {
   background: rgba(255, 255, 255, 0.98);
   border-radius: 24px;
-  padding: 2rem 1.5rem;
+  padding: 0;
   box-shadow:
-    0 20px 60px rgba(0, 0, 0, 0.3),
-    0 0 0 1px rgba(255, 255, 255, 0.1) inset;
-  backdrop-filter: blur(10px);
-  animation: slideUp 0.8s ease-out;
+    0 20px 60px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(255, 255, 255, 0.1) inset,
+    0 -4px 0 0 #ff6b35;
+  backdrop-filter: blur(15px);
+  animation: slideUp 1s ease-out;
+  overflow: hidden;
+  position: relative;
+
+  .card-header-accent {
+    height: 6px;
+    background: linear-gradient(90deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
+    background-size: 200% 100%;
+    animation: gradientShift 3s ease infinite;
+  }
 
   .form-title {
     font-size: 1.75rem;
-    font-weight: 700;
-    color: #2d3748;
-    margin: 0 0 1.5rem 0;
+    font-weight: 800;
+    color: #00254d;
+    margin: 0;
+    padding: 2rem 2rem 1.5rem;
     text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+
+    ion-icon {
+      color: #ff6b35;
+      font-size: 2rem;
+    }
+  }
+
+  form {
+    padding: 0 2rem 2rem;
   }
 }
 
-// Input Groups
+// Input Groups con estilo campo
 .input-group {
   margin-bottom: 1.25rem;
 
   .custom-input {
-    --background: #f7fafc;
-    --border-radius: 12px;
-    border-radius: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+    --background: #f8f9ff;
+    --border-radius: 14px;
+    border-radius: 14px;
+    box-shadow:
+      0 4px 12px rgba(0, 37, 77, 0.08),
+      inset 0 2px 4px rgba(0, 0, 0, 0.05);
     transition: all 0.3s ease;
     padding: 0.5rem 0;
+    border: 2px solid transparent;
 
     &:hover {
-      --background: #edf2f7;
+      --background: #fff;
+      transform: translateY(-1px);
     }
 
     &.ion-focused {
       --background: #fff;
-      box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+      border-color: #ff6b35;
+      box-shadow:
+        0 0 0 4px rgba(255, 107, 53, 0.15),
+        0 6px 16px rgba(255, 107, 53, 0.2);
       transform: translateY(-2px);
     }
 
     .input-icon {
-      color: #667eea;
-      font-size: 1.25rem;
-      margin-right: 0.5rem;
+      color: #ff6b35;
+      font-size: 1.4rem;
+      margin-right: 0.75rem;
+      filter: drop-shadow(0 2px 4px rgba(255, 107, 53, 0.3));
     }
 
     .input-field {
       --padding-start: 0;
       font-size: 1rem;
-      color: #2d3748;
+      color: #00254d;
+      font-weight: 500;
 
       &::placeholder {
         color: #a0aec0;
+        font-weight: 400;
       }
     }
   }
@@ -152,129 +329,221 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: #fff5f5;
-  border: 1px solid #fc8181;
-  border-radius: 8px;
-  padding: 0.75rem;
+  background: linear-gradient(135deg, #fff5f5 0%, #fed7d7 100%);
+  border: 2px solid #fc8181;
+  border-radius: 12px;
+  padding: 0.875rem;
   margin-bottom: 1.25rem;
-  animation: shake 0.5s ease-in-out;
+  animation:
+    shake 0.5s ease-in-out,
+    slideInLeft 0.4s ease-out;
 
   ion-icon {
     color: #e53e3e;
-    font-size: 1.25rem;
+    font-size: 1.5rem;
     flex-shrink: 0;
   }
 
   span {
     color: #c53030;
-    font-size: 0.875rem;
-    font-weight: 500;
+    font-size: 0.9rem;
+    font-weight: 600;
   }
 }
 
-// Buttons
+// Button estilo camiseta
 .login-button {
-  --background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --border-radius: 12px;
-  --box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
-  height: 54px;
-  font-size: 1.1rem;
-  font-weight: 600;
-  text-transform: none;
+  --background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  --border-radius: 14px;
+  --box-shadow:
+    0 6px 20px rgba(255, 107, 53, 0.4), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
+  height: 58px;
+  font-size: 1.15rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
   margin-top: 1rem;
   transition: all 0.3s ease;
+  position: relative;
+  overflow: hidden;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(
+      90deg,
+      transparent,
+      rgba(255, 255, 255, 0.3),
+      transparent
+    );
+    transition: left 0.6s;
+  }
+
+  &:hover:not([disabled])::before {
+    left: 100%;
+  }
 
   &:hover:not([disabled]) {
-    --background: linear-gradient(135deg, #5a67d8 0%, #6b46a0 100%);
-    transform: translateY(-2px);
-    --box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+    --background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
+    transform: translateY(-3px);
+    --box-shadow:
+      0 8px 25px rgba(255, 107, 53, 0.5), inset 0 -2px 0 rgba(0, 0, 0, 0.2);
   }
 
   &:active:not([disabled]) {
-    transform: translateY(0);
+    transform: translateY(-1px);
   }
 
   &[disabled] {
-    opacity: 0.6;
+    opacity: 0.5;
+    filter: grayscale(0.5);
   }
 
   ion-icon {
-    margin-left: 0.5rem;
+    font-size: 1.3rem;
   }
 }
 
 .forgot-password {
   text-align: center;
-  margin-top: 1.25rem;
+  margin-top: 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+
+  ion-icon {
+    color: #718096;
+    font-size: 1rem;
+  }
 
   a {
-    color: #667eea;
+    color: #00254d;
     text-decoration: none;
-    font-size: 0.875rem;
-    font-weight: 500;
-    transition: color 0.3s ease;
+    font-size: 0.9rem;
+    font-weight: 600;
+    transition: all 0.3s ease;
 
     &:hover {
-      color: #5a67d8;
+      color: #ff6b35;
       text-decoration: underline;
     }
   }
 }
 
-// Footer Section
+// Footer Section con estadísticas
 .footer-section {
   margin-top: auto;
   padding-top: 2rem;
-  text-align: center;
-  animation: fadeIn 1s ease-in-out 0.3s both;
+  animation: fadeIn 1.2s ease-in-out 0.4s both;
+
+  .stats-banner {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border: 2px solid rgba(255, 255, 255, 0.2);
+    border-radius: 16px;
+    padding: 1rem;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+
+    .stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.3rem;
+      color: #fff;
+
+      ion-icon {
+        font-size: 1.8rem;
+        color: #f7931e;
+        filter: drop-shadow(0 2px 4px rgba(247, 147, 30, 0.5));
+      }
+
+      span {
+        font-weight: 700;
+        font-size: 1.1rem;
+        text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+      }
+    }
+
+    .stat-divider {
+      width: 2px;
+      height: 40px;
+      background: linear-gradient(
+        180deg,
+        transparent,
+        rgba(255, 255, 255, 0.3),
+        transparent
+      );
+    }
+  }
 
   .register-text {
     color: rgba(255, 255, 255, 0.95);
     font-size: 1rem;
     margin-bottom: 1rem;
     font-weight: 400;
+    text-align: center;
   }
 
   .register-button {
     --border-color: rgba(255, 255, 255, 0.8);
     --color: #fff;
     --border-width: 2px;
-    --border-radius: 12px;
-    height: 48px;
-    font-weight: 600;
-    text-transform: none;
+    --border-radius: 14px;
+    height: 52px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
     transition: all 0.3s ease;
+    background: rgba(255, 107, 53, 0.1);
 
     &:hover {
-      --background: rgba(255, 255, 255, 0.1);
-      --border-color: #fff;
+      --background: rgba(255, 107, 53, 0.2);
+      --border-color: #ff6b35;
+      --color: #ff6b35;
       transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(255, 107, 53, 0.3);
+    }
+
+    ion-icon {
+      font-size: 1.2rem;
     }
   }
 }
 
-// Decorative Circles
-.decoration-circle {
+// Partículas decorativas
+.decoration-particle {
   position: absolute;
-  border-radius: 50%;
-  background: rgba(255, 255, 255, 0.05);
+  font-size: 2.5rem;
+  opacity: 0.15;
   pointer-events: none;
   z-index: 0;
+  animation: floatParticle 8s infinite ease-in-out;
 
-  &.circle-1 {
-    width: 300px;
-    height: 300px;
-    top: -100px;
-    right: -100px;
-    animation: float 6s ease-in-out infinite;
+  &.particle-1 {
+    top: 15%;
+    right: 10%;
+    animation-delay: 0s;
   }
 
-  &.circle-2 {
-    width: 200px;
-    height: 200px;
-    bottom: -50px;
-    left: -50px;
-    animation: float 8s ease-in-out infinite reverse;
+  &.particle-2 {
+    bottom: 25%;
+    left: 8%;
+    animation-delay: 2.5s;
+  }
+
+  &.particle-3 {
+    top: 45%;
+    right: 5%;
+    animation-delay: 5s;
   }
 }
 
@@ -291,7 +560,7 @@
 @keyframes slideDown {
   from {
     opacity: 0;
-    transform: translateY(-30px);
+    transform: translateY(-40px);
   }
   to {
     opacity: 1;
@@ -302,11 +571,22 @@
 @keyframes slideUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translateY(40px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
   }
 }
 
@@ -316,17 +596,7 @@
     transform: translateY(0);
   }
   50% {
-    transform: translateY(-10px);
-  }
-}
-
-@keyframes float {
-  0%,
-  100% {
-    transform: translateY(0) rotate(0deg);
-  }
-  50% {
-    transform: translateY(-20px) rotate(5deg);
+    transform: translateY(-8px);
   }
 }
 
@@ -336,17 +606,102 @@
     transform: translateX(0);
   }
   25% {
-    transform: translateX(-5px);
+    transform: translateX(-8px);
   }
   75% {
-    transform: translateX(5px);
+    transform: translateX(8px);
+  }
+}
+
+@keyframes shieldPulse {
+  0%,
+  100% {
+    transform: translateX(-50%) scale(1);
+    box-shadow:
+      0 10px 40px rgba(255, 107, 53, 0.4),
+      0 0 0 4px rgba(255, 255, 255, 0.2),
+      0 0 0 8px rgba(255, 107, 53, 0.3);
+  }
+  50% {
+    transform: translateX(-50%) scale(1.03);
+    box-shadow:
+      0 12px 50px rgba(255, 107, 53, 0.5),
+      0 0 0 4px rgba(255, 255, 255, 0.3),
+      0 0 0 8px rgba(255, 107, 53, 0.4);
+  }
+}
+
+@keyframes shine {
+  0% {
+    left: -100%;
+  }
+  50%,
+  100% {
+    left: 150%;
+  }
+}
+
+@keyframes floatBall {
+  0%,
+  100% {
+    transform: translate(0, 0) rotate(0deg);
+  }
+  25% {
+    transform: translate(20px, -30px) rotate(90deg);
+  }
+  50% {
+    transform: translate(-10px, -50px) rotate(180deg);
+  }
+  75% {
+    transform: translate(-30px, -20px) rotate(270deg);
+  }
+}
+
+@keyframes floatParticle {
+  0%,
+  100% {
+    transform: translateY(0) rotate(0deg);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translateY(-25px) rotate(180deg);
+    opacity: 0.25;
+  }
+}
+
+@keyframes gradientShift {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
   }
 }
 
 // Responsive
 @media (min-width: 768px) {
   .login-container {
-    max-width: 450px;
+    max-width: 480px;
     margin: 0 auto;
+  }
+}
+
+@media (max-width: 375px) {
+  .header-section {
+    .app-title {
+      font-size: 2.4rem;
+    }
+  }
+
+  .form-card {
+    .form-title {
+      font-size: 1.5rem;
+      padding: 1.5rem 1.5rem 1rem;
+    }
+
+    form {
+      padding: 0 1.5rem 1.5rem;
+    }
   }
 }

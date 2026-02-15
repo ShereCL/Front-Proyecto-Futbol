@@ -34,4 +34,165 @@
 
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
-@import '@ionic/angular/css/palettes/dark.system.css';
+@import "@ionic/angular/css/palettes/dark.system.css";
+
+// src/global.scss - Agregar estos estilos al final del archivo
+
+//Alerts personalizados
+
+// src/global.scss - Agregar estos estilos al final del archivo
+
+//Alert y toast estilos globales
+
+//Alerts personalizados
+// ===================================
+// ALERTS PREMIUM - Estilos Globales
+// ===================================
+
+.bet-alert-premium {
+  --backdrop-opacity: 0.65;
+
+  .alert-wrapper {
+    border-radius: 28px;
+    box-shadow: 0 20px 60px rgba(0, 37, 77, 0.4);
+    overflow: hidden;
+    max-width: 340px;
+    border: 3px solid #ff6b35;
+  }
+
+  .alert-head {
+    padding: 24px 20px 20px 20px;
+    text-align: center;
+    background: linear-gradient(135deg, #004e92 0%, #00254d 100%);
+    position: relative;
+
+    &::after {
+      content: "";
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #ff6b35 0%, #f7931e 100%);
+    }
+
+    h2 {
+      color: white;
+      font-weight: 800;
+      font-size: 1.3rem;
+      margin: 0;
+      letter-spacing: 0.5px;
+      text-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .alert-message {
+    padding: 32px 24px;
+    background: white;
+    text-align: center;
+    font-size: 1.3rem;
+    font-weight: 700;
+    line-height: 1.8;
+    color: #00254d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 80px;
+  }
+
+  .alert-button-group {
+    padding: 0;
+    background: white;
+    border-top: 2px solid #f1f5f9;
+
+    button {
+      margin: 0;
+      height: 58px;
+      font-size: 1.05rem;
+      font-weight: 700;
+      text-transform: none;
+      letter-spacing: 0.3px;
+      border-radius: 0;
+    }
+  }
+
+  .alert-button-group-vertical {
+    flex-direction: row;
+
+    button {
+      flex: 1;
+      border-right: 2px solid #f1f5f9;
+
+      &:last-child {
+        border-right: none;
+        border-bottom-right-radius: 25px;
+      }
+
+      &:first-child {
+        border-bottom-left-radius: 25px;
+      }
+    }
+  }
+
+  .alert-btn-cancel {
+    background: white;
+    color: #64748b;
+
+    &:hover {
+      background: #f8fafc;
+    }
+  }
+
+  .alert-btn-confirm {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+    color: white;
+    font-weight: 800;
+    position: relative;
+    overflow: hidden;
+
+    &::before {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 0;
+      height: 0;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.3);
+      transform: translate(-50%, -50%);
+      transition:
+        width 0.6s,
+        height 0.6s;
+    }
+
+    &:active::before {
+      width: 300px;
+      height: 300px;
+    }
+  }
+}
+
+// ===================================
+// TOASTS GLOBALES
+// ===================================
+
+.custom-toast {
+  --border-radius: 12px;
+  --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  font-weight: 600;
+
+  &.toast-success {
+    --background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+    --color: white;
+  }
+
+  &.toast-danger {
+    --background: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
+    --color: white;
+  }
+
+  &.toast-warning {
+    --background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+    --color: white;
+  }
+}

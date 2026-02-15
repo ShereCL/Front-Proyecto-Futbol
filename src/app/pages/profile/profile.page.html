@@ -1,0 +1,350 @@
+<ion-header>
+  <ion-toolbar class="profile-toolbar">
+    <ion-title>
+      <ion-icon name="person-circle-outline"></ion-icon>
+      Mi Perfil
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="profile-content">
+  <!-- Fondo de césped -->
+  <div class="grass-background"></div>
+
+  <div class="profile-container">
+    <!-- Header del usuario - Estilo tarjeta de jugador -->
+    <ion-card class="user-header-card">
+      <div class="card-design-pattern"></div>
+      <div class="player-card-shine"></div>
+
+      <ion-card-content>
+        <div class="user-header">
+          <div class="avatar-wrapper">
+            <ion-avatar class="user-avatar" (click)="changeAvatar()">
+              <img
+                [src]="currentUser?.avatarUrl || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User') + '&background=ff6b35&color=fff&size=256'"
+                [alt]="currentUser?.username"
+                (error)="onImageError($event)"
+              />
+            </ion-avatar>
+            <div class="avatar-ring"></div>
+            <div class="edit-icon">
+              <ion-icon name="camera"></ion-icon>
+            </div>
+          </div>
+
+          <div class="user-info">
+            <h2 class="player-name">
+              {{ currentUser?.username || 'Jugador' }}
+            </h2>
+            <div class="info-row">
+              <ion-icon name="mail-outline"></ion-icon>
+              <span>{{ currentUser?.email }}</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Puntos destacados - Estilo marcador -->
+        <div class="points-showcase">
+          <div class="points-badge">
+            <div class="trophy-icon-wrapper">
+              <ion-icon name="trophy" class="trophy-icon"></ion-icon>
+              <div class="trophy-glow"></div>
+            </div>
+            <div class="points-info">
+              <span class="points-label">Puntos Totales</span>
+              <span class="points-value">{{ currentUser?.points || 0 }}</span>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+
+    <!-- Segmentos con diseño de botones de estadio -->
+    <ion-segment
+      [value]="selectedSegment"
+      (ionChange)="segmentChanged($event)"
+      mode="md"
+      class="custom-segment"
+    >
+      <ion-segment-button value="info" class="segment-btn">
+        <ion-icon name="person-outline"></ion-icon>
+        <ion-label>Info</ion-label>
+        <div class="segment-indicator"></div>
+      </ion-segment-button>
+      <ion-segment-button value="bets" class="segment-btn">
+        <ion-icon name="football-outline"></ion-icon>
+        <ion-label>Apuestas</ion-label>
+        <div class="segment-indicator"></div>
+      </ion-segment-button>
+      <ion-segment-button value="stats" class="segment-btn">
+        <ion-icon name="stats-chart-outline"></ion-icon>
+        <ion-label>Stats</ion-label>
+        <div class="segment-indicator"></div>
+      </ion-segment-button>
+    </ion-segment>
+
+    <!-- Contenido según segmento -->
+    <div [ngSwitch]="selectedSegment" class="segment-content">
+      <!-- INFORMACIÓN -->
+      <div *ngSwitchCase="'info'">
+        <ion-card class="info-card">
+          <div class="card-top-line"></div>
+          <ion-card-header>
+            <ion-card-title class="section-title">
+              <ion-icon name="person-outline"></ion-icon>
+              Información Personal
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <ion-list lines="none" class="custom-list">
+              <ion-item class="custom-item">
+                <div class="item-icon-wrapper" slot="start">
+                  <ion-icon name="person-outline"></ion-icon>
+                </div>
+                <ion-label>
+                  <p>Usuario</p>
+                  <h3>{{ currentUser?.username }}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-item class="custom-item">
+                <div class="item-icon-wrapper" slot="start">
+                  <ion-icon name="mail-outline"></ion-icon>
+                </div>
+                <ion-label>
+                  <p>Email</p>
+                  <h3>{{ currentUser?.email }}</h3>
+                </ion-label>
+              </ion-item>
+              <ion-item class="custom-item">
+                <div class="item-icon-wrapper trophy-wrapper" slot="start">
+                  <ion-icon name="trophy-outline"></ion-icon>
+                </div>
+                <ion-label>
+                  <p>Puntos</p>
+                  <h3 class="points-highlight">
+                    {{ currentUser?.points || 0 }} puntos
+                  </h3>
+                </ion-label>
+              </ion-item>
+            </ion-list>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Botón cerrar sesión -->
+        <ion-card class="logout-card">
+          <ion-card-content>
+            <ion-button
+              expand="block"
+              color="danger"
+              (click)="handleLogout()"
+              class="logout-button"
+            >
+              <ion-icon slot="start" name="log-out-outline"></ion-icon>
+              Cerrar Sesión
+            </ion-button>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- APUESTAS -->
+      <div *ngSwitchCase="'bets'">
+        <!-- Loading -->
+        <div class="loading-container" *ngIf="loading">
+          <div class="stadium-loader">
+            <div class="loader-ball">⚽</div>
+            <div class="loader-shadow"></div>
+          </div>
+          <p>Cargando apuestas...</p>
+        </div>
+
+        <!-- Sin apuestas -->
+        <ion-card *ngIf="!loading && bets.length === 0" class="empty-bets-card">
+          <ion-card-content>
+            <div class="empty-state">
+              <div class="empty-icon-wrapper">
+                <ion-icon name="football-outline"></ion-icon>
+                <div class="icon-pulse"></div>
+              </div>
+              <h3>No tienes apuestas</h3>
+              <p>¡Empieza a apostar en los próximos partidos!</p>
+              <ion-button
+                expand="block"
+                routerLink="/tabs/matches"
+                class="action-button"
+              >
+                <ion-icon slot="start" name="football"></ion-icon>
+                Ver Partidos
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <!-- Lista de apuestas -->
+        <ion-card *ngFor="let bet of bets" class="bet-card-list">
+          <div class="bet-card-accent"></div>
+          <ion-card-content>
+            <div class="bet-status-header">
+              <ion-badge
+                [color]="getStatusColor(bet.status)"
+                class="status-badge-custom"
+              >
+                <ion-icon [name]="getStatusIcon(bet.status)"></ion-icon>
+                {{ getStatusText(bet.status) }}
+              </ion-badge>
+              <ion-badge
+                *ngIf="bet.pointsEarned > 0"
+                class="points-earned-badge"
+              >
+                <ion-icon name="trophy"></ion-icon>
+                +{{ bet.pointsEarned }} pts
+              </ion-badge>
+            </div>
+
+            <div class="match-info" *ngIf="bet.match">
+              <div class="teams-compact">
+                <div class="team-compact">
+                  <div class="shield-mini-wrapper">
+                    <img
+                      [src]="getTeamShield(bet.match.homeTeam || bet.match.home)"
+                      [alt]="bet.match.homeTeam || bet.match.home"
+                      (error)="onImageError($event)"
+                    />
+                  </div>
+                  <span>{{ bet.match.homeTeam || bet.match.home }}</span>
+                </div>
+
+                <div class="scores-compact">
+                  <div class="score-item">
+                    <span class="label">Tu apuesta</span>
+                    <span class="value"
+                      >{{ bet.homeScore }} - {{ bet.awayScore }}</span
+                    >
+                  </div>
+                  <div
+                    class="score-item"
+                    *ngIf="bet.match.status === 'finished'"
+                  >
+                    <span class="label">Resultado</span>
+                    <span class="value result"
+                      >{{ bet.match.homeScore }} - {{ bet.match.awayScore
+                      }}</span
+                    >
+                  </div>
+                </div>
+
+                <div class="team-compact">
+                  <div class="shield-mini-wrapper">
+                    <img
+                      [src]="getTeamShield(bet.match.awayTeam || bet.match.away)"
+                      [alt]="bet.match.awayTeam || bet.match.away"
+                      (error)="onImageError($event)"
+                    />
+                  </div>
+                  <span>{{ bet.match.awayTeam || bet.match.away }}</span>
+                </div>
+              </div>
+
+              <ion-button
+                expand="block"
+                fill="clear"
+                size="small"
+                (click)="viewMatchDetail(bet)"
+                class="view-detail-button"
+              >
+                <span>Ver Detalles</span>
+                <ion-icon slot="end" name="chevron-forward-outline"></ion-icon>
+              </ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+
+      <!-- ESTADÍSTICAS -->
+      <div *ngSwitchCase="'stats'">
+        <ion-card class="stats-main-card">
+          <div class="card-top-line"></div>
+          <ion-card-header>
+            <ion-card-title class="section-title">
+              <ion-icon name="stats-chart-outline"></ion-icon>
+              Estadísticas Generales
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="stats-grid">
+              <div class="stat-item">
+                <div class="stat-icon-wrapper primary">
+                  <ion-icon name="football-outline"></ion-icon>
+                </div>
+                <span class="stat-value">{{ stats.totalBets }}</span>
+                <span class="stat-label">Apuestas</span>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-icon-wrapper success">
+                  <ion-icon name="checkmark-circle-outline"></ion-icon>
+                </div>
+                <span class="stat-value">{{ stats.wonBets }}</span>
+                <span class="stat-label">Acertadas</span>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-icon-wrapper danger">
+                  <ion-icon name="close-circle-outline"></ion-icon>
+                </div>
+                <span class="stat-value">{{ stats.lostBets }}</span>
+                <span class="stat-label">Falladas</span>
+              </div>
+
+              <div class="stat-item">
+                <div class="stat-icon-wrapper warning">
+                  <ion-icon name="time-outline"></ion-icon>
+                </div>
+                <span class="stat-value">{{ stats.pendingBets }}</span>
+                <span class="stat-label">Pendientes</span>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+
+        <ion-card class="performance-card">
+          <div class="card-top-line"></div>
+          <ion-card-header>
+            <ion-card-title class="section-title">
+              <ion-icon name="ribbon-outline"></ion-icon>
+              Rendimiento
+            </ion-card-title>
+          </ion-card-header>
+          <ion-card-content>
+            <div class="performance-stats">
+              <div class="performance-item">
+                <div class="perf-header">
+                  <span class="performance-label">Tasa de Acierto</span>
+                  <span class="performance-value">{{ stats.winRate }}%</span>
+                </div>
+                <div class="performance-bar">
+                  <div class="performance-fill" [style.width.%]="stats.winRate">
+                    <div class="fill-shine"></div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="performance-item total-points">
+                <div class="trophy-large-wrapper">
+                  <ion-icon name="trophy"></ion-icon>
+                  <div class="trophy-rays"></div>
+                </div>
+                <div class="points-data">
+                  <span class="performance-label">Puntos Ganados</span>
+                  <span class="performance-value-large"
+                    >{{ stats.totalPoints }}</span
+                  >
+                </div>
+              </div>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+    </div>
+  </div>
+</ion-content>

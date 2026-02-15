@@ -1,0 +1,266 @@
+// src/app/tabs/tabs.page.scss
+
+ion-tab-bar {
+  --background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
+  --border: 0;
+  box-shadow:
+    0 -6px 30px rgba(0, 37, 77, 0.12),
+    0 -2px 0 0 #ff6b35;
+  height: 70px;
+  padding-top: 8px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  position: relative;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      #ff6b35 0%,
+      #f7931e 25%,
+      #ff6b35 50%,
+      #f7931e 75%,
+      #ff6b35 100%
+    );
+    background-size: 200% 100%;
+    animation: gradientMove 4s linear infinite;
+  }
+}
+
+ion-tab-button {
+  --color: #718096;
+  --color-selected: #ff6b35;
+  --padding-top: 10px;
+  --padding-bottom: 10px;
+  font-weight: 600;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+
+  // Indicador de estadio activo
+  &::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 50%;
+    transform: translateX(-50%) scaleX(0);
+    width: 60%;
+    height: 3px;
+    background: linear-gradient(90deg, #ff6b35, #f7931e);
+    border-radius: 0 0 3px 3px;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  ion-icon {
+    font-size: 26px;
+    margin-bottom: 3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    filter: drop-shadow(0 0 0 transparent);
+  }
+
+  ion-label {
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.4px;
+    margin-top: 3px;
+    text-transform: uppercase;
+  }
+
+  // Selected state - Jugador activo
+  &.tab-selected {
+    &::before {
+      transform: translateX(-50%) scaleX(1);
+    }
+
+    ion-icon {
+      transform: scale(1.15) translateY(-2px);
+      color: #ff6b35;
+      filter: drop-shadow(0 3px 8px rgba(255, 107, 53, 0.4));
+      animation: tabBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    ion-label {
+      color: #ff6b35;
+      font-weight: 700;
+    }
+
+    // Efecto de gol al seleccionar
+    &::after {
+      content: "";
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 80%;
+      height: 80%;
+      background: radial-gradient(
+        circle,
+        rgba(255, 107, 53, 0.2) 0%,
+        transparent 70%
+      );
+      border-radius: 50%;
+      animation: goalPulse 0.6s ease-out;
+      pointer-events: none;
+    }
+  }
+
+  // Hover effect (desktop) - Pre-calentamiento
+  &:hover:not(.tab-selected) {
+    --color: #00254d;
+
+    ion-icon {
+      transform: scale(1.08) translateY(-1px);
+      color: #004e92;
+    }
+
+    ion-label {
+      color: #00254d;
+    }
+  }
+
+  // Active/Press effect - Toque de balón
+  &:active {
+    ion-icon {
+      transform: scale(0.95);
+    }
+  }
+}
+
+// Animación específica para cada tab
+ion-tab-button[tab="matches"] {
+  ion-icon {
+    animation: spinBall 3s linear infinite;
+  }
+
+  &.tab-selected ion-icon {
+    animation:
+      spinBall 1s linear infinite,
+      tabBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+ion-tab-button[tab="league"] {
+  &.tab-selected ion-icon {
+    animation:
+      trophyShine 2s ease-in-out infinite,
+      tabBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+ion-tab-button[tab="ranking"] {
+  &.tab-selected ion-icon {
+    animation:
+      podiumGlow 2s ease-in-out infinite,
+      tabBounce 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+}
+
+// Animations
+@keyframes tabBounce {
+  0%,
+  100% {
+    transform: scale(1.15) translateY(-2px);
+  }
+  50% {
+    transform: scale(1.2) translateY(-5px);
+  }
+}
+
+@keyframes goalPulse {
+  0% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+}
+
+@keyframes gradientMove {
+  0% {
+    background-position: 0% 50%;
+  }
+  100% {
+    background-position: 200% 50%;
+  }
+}
+
+@keyframes spinBall {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes trophyShine {
+  0%,
+  100% {
+    filter: drop-shadow(0 3px 8px rgba(255, 107, 53, 0.4));
+  }
+  50% {
+    filter: drop-shadow(0 3px 12px rgba(247, 147, 30, 0.6));
+  }
+}
+
+@keyframes podiumGlow {
+  0%,
+  100% {
+    filter: drop-shadow(0 3px 8px rgba(255, 107, 53, 0.4));
+    transform: scale(1.15) translateY(-2px);
+  }
+  50% {
+    filter: drop-shadow(0 5px 15px rgba(255, 107, 53, 0.6));
+    transform: scale(1.18) translateY(-3px);
+  }
+}
+
+// Responsive adjustments
+@media (max-width: 576px) {
+  ion-tab-bar {
+    height: 65px;
+    padding-top: 6px;
+    padding-bottom: max(6px, env(safe-area-inset-bottom));
+  }
+
+  ion-tab-button {
+    --padding-top: 8px;
+    --padding-bottom: 8px;
+
+    ion-icon {
+      font-size: 24px;
+    }
+
+    ion-label {
+      font-size: 10px;
+      margin-top: 2px;
+    }
+  }
+}
+
+// Dark mode support (si lo implemento)
+@media (prefers-color-scheme: dark) {
+  ion-tab-bar {
+    --background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);
+    box-shadow:
+      0 -6px 30px rgba(0, 0, 0, 0.3),
+      0 -2px 0 0 #ff6b35;
+  }
+
+  ion-tab-button {
+    --color: #a0aec0;
+    --color-selected: #ff6b35;
+
+    &:hover:not(.tab-selected) {
+      --color: #e2e8f0;
+    }
+  }
+}

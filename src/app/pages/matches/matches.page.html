@@ -1,87 +1,180 @@
 <ion-content class="matches-content">
-  <div class="background-overlay"></div>
+  <!-- Estadio de fondo -->
+  <div class="stadium-atmosphere">
+    <div class="floodlights">
+      <div class="light-beam beam-1"></div>
+      <div class="light-beam beam-2"></div>
+      <div class="light-beam beam-3"></div>
+    </div>
+    <div class="crowd-noise"></div>
+  </div>
+
   <div class="matches-container">
-    <!-- Header Section -->
+    <!-- Header -->
     <div class="header-section">
       <div class="icon-container">
-        <ion-icon name="football-outline" class="header-icon"></ion-icon>
+        <div class="trophy-wrapper">
+          <ion-icon name="football-outline" class="header-icon"></ion-icon>
+          <div class="icon-glow"></div>
+        </div>
       </div>
-      <h1 class="page-title">Partidos de la Jornada</h1>
-      <p class="page-subtitle">Sigue los partidos en vivo</p>
+      <h1 class="page-title">
+        <span class="title-main">JORNADA</span>
+        <span class="title-sub">EN VIVO</span>
+      </h1>
+      <p class="page-subtitle">
+        <ion-icon name="radio-outline"></ion-icon>
+        Sigue todos los partidos
+      </p>
     </div>
-    <!-- Matches List -->
+
+    <!-- Lista de partidos -->
     <div class="matches-list" *ngIf="!loading; else loadingTpl">
-      <div class="match-card" *ngFor="let match of matches">
+      <div
+        class="match-card"
+        *ngFor="let match of matches"
+        (click)="goToMatchDetail(match.id)"
+        style="cursor: pointer"
+      >
+        <!-- Borde superior decorativo -->
+        <div class="card-top-accent"></div>
+
+        <!-- Header del partido con césped -->
         <div class="match-header">
+          <div class="grass-pattern"></div>
           <ion-badge
             [color]="getStatusColor(match.status)"
             class="status-badge"
           >
+            <div class="badge-shine"></div>
+            <ion-icon [name]="getStatusIcon(match.status)"></ion-icon>
             {{ getStatusText(match.status) }}
           </ion-badge>
           <span class="match-minute" *ngIf="match.status === 'live'">
+            <div class="pulse-ring"></div>
             <ion-icon name="time-outline"></ion-icon>
             {{ match.minute }}'
           </span>
         </div>
+
+        <!-- Body del partido -->
         <div class="match-body">
+          <!-- Equipo Local -->
           <div class="team home-team">
-            <img
-              [src]="getTeamShield(match.home)"
-              [alt]="match.home"
-              class="team-shield"
-              (error)="onImageError($event)"
-            />
-            <div class="team-info">
-              <div class="team-name">{{ match.home }}</div>
-              <div class="team-score">{{ match.homeScore }}</div>
+            <div class="team-shield-wrapper">
+              <div class="shield-glow home-glow"></div>
+              <img
+                [src]="getTeamShield(match.home)"
+                [alt]="match.home"
+                class="team-shield"
+                (error)="onImageError($event)"
+              />
             </div>
+            <div class="team-name">{{ match.home }}</div>
           </div>
-          <div class="match-separator">
-            <span class="vs-text">VS</span>
+
+          <!-- Score y VS separador -->
+          <div class="match-center">
+            <div class="score-display">
+              <span class="score-home">{{ match.homeScore }}</span>
+              <span class="score-separator">-</span>
+              <span class="score-away">{{ match.awayScore }}</span>
+            </div>
+            <div class="vs-label">VS</div>
           </div>
+
+          <!-- Equipo Visitante -->
           <div class="team away-team">
-            <div class="team-info">
-              <div class="team-score">{{ match.awayScore }}</div>
-              <div class="team-name">{{ match.away }}</div>
+            <div class="team-shield-wrapper">
+              <div class="shield-glow away-glow"></div>
+              <img
+                [src]="getTeamShield(match.away)"
+                [alt]="match.away"
+                class="team-shield"
+                (error)="onImageError($event)"
+              />
             </div>
-            <img
-              [src]="getTeamShield(match.away)"
-              [alt]="match.away"
-              class="team-shield"
-              (error)="onImageError($event)"
-            />
+            <div class="team-name">{{ match.away }}</div>
           </div>
         </div>
-        <div class="match-footer" *ngIf="match.status !== 'finished'">
-          <ion-button
-            size="small"
-            fill="clear"
-            class="bet-button"
-            (click)="onBet(match)"
-          >
-            <ion-icon name="cash-outline" slot="start"></ion-icon>
-            Apostar
-          </ion-button>
+
+        <!-- Eventos del partido -->
+        <div class="match-events" *ngIf="match.events?.length">
+          <div class="events-header">
+            <ion-icon name="list-outline"></ion-icon>
+            <span>Cronología del partido</span>
+            <div class="header-line"></div>
+          </div>
+          <div class="events-list">
+            <div
+              class="event-item"
+              *ngFor="let event of match.events"
+              [ngClass]="{
+                'home-event': event.team === match.home,
+                'away-event': event.team === match.away
+              }"
+            >
+              <div class="event-timeline">
+                <div
+                  class="timeline-dot"
+                  [style.background]="
+                    event.team === match.home ? '#ff6b35' : '#f7931e'
+                  "
+                ></div>
+                <div class="timeline-line"></div>
+              </div>
+              <div class="event-content">
+                <div
+                  class="event-icon"
+                  [style.background]="
+                    event.team === match.home ? 'linear-gradient(135deg, #ff6b35, #f7931e)' : 'linear-gradient(135deg, #f7931e, #ff6b35)'
+                  "
+                >
+                  <ion-icon [name]="getEventIcon(event.type)"></ion-icon>
+                </div>
+                <div class="event-details">
+                  <div class="event-player">{{ event.player }}</div>
+                  <div class="event-type">{{ getEventText(event.type) }}</div>
+                </div>
+                <div class="event-minute">{{ event.minute }}'</div>
+              </div>
+            </div>
+          </div>
         </div>
-        <!-- posible implementación de eventos como tarjetas y gole, lo no tengo claro -->
+
+        <!-- Indicador de clic -->
+        <div class="click-indicator">
+          <ion-icon name="chevron-forward-outline"></ion-icon>
+        </div>
       </div>
+
+      <!-- Empty state -->
       <div class="empty-state" *ngIf="matches.length === 0">
-        <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
-        <p>No hay partidos disponibles</p>
+        <div class="empty-icon-wrapper">
+          <ion-icon name="calendar-outline" class="empty-icon"></ion-icon>
+          <div class="icon-circle"></div>
+        </div>
+        <h3>Sin partidos programados</h3>
+        <p>No hay partidos disponibles en este momento</p>
       </div>
     </div>
-    <!-- Loading Template -->
+    <!-- matches-list -->
+
+    <!-- Loading -->
     <ng-template #loadingTpl>
       <div class="loading-container">
         <div class="loading-card">
-          <ion-spinner name="crescent" class="custom-spinner"></ion-spinner>
-          <p class="loading-text">Cargando partidos...</p>
+          <div class="stadium-loader">
+            <div class="loader-ball">⚽</div>
+            <div class="loader-shadow"></div>
+          </div>
+          <p class="loading-text">Cargando jornada...</p>
         </div>
       </div>
     </ng-template>
-    <!-- Decorative Circles -->
-    <div class="decoration-circle circle-1"></div>
-    <div class="decoration-circle circle-2"></div>
+
+    <!-- Decoración -->
+    <div class="decoration-particle particle-1">⚽</div>
+    <div class="decoration-particle particle-2">🏆</div>
   </div>
 </ion-content>
