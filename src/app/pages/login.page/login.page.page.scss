@@ -1,12 +1,9 @@
-// src/app/pages/login.page.scss
-
 .login-content {
   --background: linear-gradient(135deg, #00254d 0%, #004e92 50%, #00254d 100%);
   position: relative;
   overflow: hidden;
 }
 
-// Campo de fútbol animado de fondo
 .football-field-bg {
   position: absolute;
   top: 0;
@@ -99,7 +96,6 @@
   animation: fadeIn 0.8s ease-in-out;
 }
 
-// Header Section con escudo
 .header-section {
   text-align: center;
   margin-bottom: 2.5rem;
@@ -230,7 +226,6 @@
   }
 }
 
-// Form Card estilo estadio VIP
 .form-card {
   background: rgba(255, 255, 255, 0.98);
   border-radius: 24px;
@@ -274,7 +269,6 @@
   }
 }
 
-// Input Groups con estilo campo
 .input-group {
   margin-bottom: 1.25rem;
 
@@ -324,7 +318,6 @@
   }
 }
 
-// Error Message
 .error-message {
   display: flex;
   align-items: center;
@@ -351,7 +344,6 @@
   }
 }
 
-// Button estilo camiseta
 .login-button {
   --background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
   --border-radius: 14px;
@@ -435,7 +427,7 @@
   }
 }
 
-// Footer Section con estadísticas
+//cosas chulas para simular premios
 .footer-section {
   margin-top: auto;
   padding-top: 2rem;
@@ -519,7 +511,7 @@
   }
 }
 
-// Partículas decorativas
+// esto es lo que cae por la pantalla
 .decoration-particle {
   position: absolute;
   font-size: 2.5rem;
@@ -547,7 +539,7 @@
   }
 }
 
-// Animations
+// Animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;

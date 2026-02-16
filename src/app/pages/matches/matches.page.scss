@@ -1,12 +1,10 @@
-// src/app/pages/matches.page.scss
-
 .matches-content {
   --background: linear-gradient(135deg, #004e92 0%, #00254d 50%, #001a33 100%);
   position: relative;
   overflow: hidden;
 }
 
-// Atmósfera del estadio
+// fondo
 .stadium-atmosphere {
   position: absolute;
   top: 0;
@@ -93,7 +91,7 @@
   animation: fadeIn 0.6s ease-in-out;
 }
 
-// Header Section
+// header
 .header-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -182,7 +180,7 @@
   }
 }
 
-// Matches List
+// lista de partidos
 .matches-list {
   display: flex;
   flex-direction: column;
@@ -190,7 +188,7 @@
   animation: slideUp 0.8s ease-out;
 }
 
-// Match Card - Estilo entrada de estadio
+// cards de los partidos
 .match-card {
   background: rgba(255, 255, 255, 0.98);
   border-radius: 20px;
@@ -203,12 +201,17 @@
   animation: scaleIn 0.4s ease-out;
   overflow: hidden;
   position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: 380px;
+  max-height: 550px;
 
   .card-top-accent {
     height: 5px;
     background: linear-gradient(90deg, #ff6b35 0%, #f7931e 50%, #ff6b35 100%);
     background-size: 200% 100%;
     animation: gradientShift 3s ease infinite;
+    flex-shrink: 0;
   }
 
   &:hover {
@@ -241,6 +244,7 @@
     align-items: center;
     padding: 1rem 1.25rem 0.75rem;
     position: relative;
+    flex-shrink: 0;
 
     .grass-pattern {
       position: absolute;
@@ -289,28 +293,27 @@
         vertical-align: middle;
       }
 
-      // Estado LIVE - Naranja/Rojo vibrante
+      // partido en vivo
       &[color="danger"] {
         background: linear-gradient(135deg, #ff6b35, #f7931e);
         color: white;
         box-shadow: 0 4px 12px rgba(255, 107, 53, 0.4);
       }
 
-      // Estado FINALIZADO - Azul oscuro
+      // partido finalizado
       &[color="medium"] {
         background: linear-gradient(135deg, #004e92, #00254d);
         color: white;
         box-shadow: 0 4px 12px rgba(0, 78, 146, 0.4);
       }
 
-      // Estado PENDIENTE - Naranja claro
+      // partido pendiente
       &[color="warning"] {
         background: linear-gradient(135deg, #f7931e, #fbbf24);
         color: white;
         box-shadow: 0 4px 12px rgba(247, 147, 30, 0.4);
       }
 
-      // Por si hay otro color
       &[color="primary"] {
         background: linear-gradient(135deg, #667eea, #764ba2);
         color: white;
@@ -373,6 +376,7 @@
     gap: 1rem;
     padding: 1.5rem 1.25rem 1.25rem;
     position: relative;
+    flex-shrink: 0;
 
     &::before {
       content: "";
@@ -403,7 +407,7 @@
         height: 70px;
 
         .shield-glow {
-          display: none; // Ocultar el glow para que sea estático
+          display: none;
         }
 
         .team-shield {
@@ -490,12 +494,18 @@
   }
 }
 
+//scroll para los eventos del partido
 .match-events {
   margin-top: 0;
   border-radius: 0 0 20px 20px;
   background: linear-gradient(135deg, #f8f9ff 0%, #eef2ff 100%);
   padding: 1rem 1.25rem;
   border-top: 2px solid rgba(247, 147, 30, 0.2);
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  min-height: 0;
 
   .events-header {
     display: flex;
@@ -507,6 +517,7 @@
     font-size: 0.9rem;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    flex-shrink: 0;
 
     ion-icon {
       font-size: 1.3rem;
@@ -524,6 +535,33 @@
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
+    overflow-y: auto;
+    overflow-x: hidden;
+    flex: 1;
+    padding-right: 0.5rem;
+
+    // scrollbar
+    &::-webkit-scrollbar {
+      width: 6px;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(247, 147, 30, 0.1);
+      border-radius: 10px;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      border-radius: 10px;
+      transition: background 0.3s ease;
+
+      &:hover {
+        background: linear-gradient(135deg, #f7931e, #ff6b35);
+      }
+    }
+
+    scrollbar-width: thin;
+    scrollbar-color: #f7931e rgba(247, 147, 30, 0.1);
 
     .event-item {
       display: flex !important;
@@ -532,6 +570,7 @@
       gap: 0.75rem;
       position: relative;
       animation: fadeIn 0.4s ease-out;
+      flex-shrink: 0;
 
       &.home-event .event-content {
         background: rgba(255, 107, 53, 0.08);
@@ -549,6 +588,7 @@
       align-items: center;
       width: 20px;
       padding-top: 0.5rem;
+      flex-shrink: 0;
 
       .timeline-dot {
         width: 14px;
@@ -647,6 +687,7 @@
         background: rgba(255, 107, 53, 0.1);
         padding: 0.3rem 0.6rem;
         border-radius: 8px;
+        flex-shrink: 0;
       }
     }
   }
@@ -658,7 +699,6 @@
   margin: 0;
 }
 
-// Empty State
 .empty-state {
   text-align: center;
   padding: 4rem 2rem;
@@ -711,7 +751,7 @@
   }
 }
 
-// Loading Container
+// Loading
 .loading-container {
   display: flex;
   justify-content: center;
@@ -761,7 +801,7 @@
   }
 }
 
-// Partículas decorativas
+// Decoraciones varias
 .decoration-particle {
   position: absolute;
   font-size: 2.5rem;
@@ -783,7 +823,7 @@
   }
 }
 
-// Animations
+// animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;
@@ -934,12 +974,12 @@
   }
 }
 
-// Añadir función helper para status icon
 .status-badge ion-icon {
   animation: none;
 }
 
 // Responsive
+
 @media (min-width: 768px) {
   .matches-container {
     max-width: 650px;
@@ -960,6 +1000,10 @@
 }
 
 @media (max-width: 375px) {
+  .match-card {
+    min-height: 350px;
+  }
+
   .match-body {
     padding: 1rem 0.75rem !important;
     gap: 0.75rem;

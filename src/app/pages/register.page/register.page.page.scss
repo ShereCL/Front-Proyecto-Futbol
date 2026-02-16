@@ -1,12 +1,9 @@
-// src/app/pages/register.page.scss
-
 .register-content {
   --background: linear-gradient(135deg, #004e92 0%, #00254d 50%, #001a33 100%);
   position: relative;
   overflow: hidden;
 }
 
-// Estadio animado de fondo
 .stadium-bg {
   position: absolute;
   top: 0;
@@ -103,7 +100,6 @@
   animation: fadeIn 0.8s ease-in-out;
 }
 
-// Header Section
 .header-section {
   text-align: center;
   margin-bottom: 2rem;
@@ -250,7 +246,6 @@
   }
 }
 
-// Form Card
 .form-card {
   background: rgba(255, 255, 255, 0.98);
   border-radius: 24px;
@@ -294,7 +289,6 @@
   }
 }
 
-// Input Groups
 .input-group {
   margin-bottom: 1.25rem;
 
@@ -366,7 +360,6 @@
   }
 }
 
-// Password Strength
 .password-strength {
   margin-top: 0.75rem;
   padding: 0 0.5rem;
@@ -445,7 +438,6 @@
   }
 }
 
-// Error Message
 .error-message {
   display: flex;
   align-items: center;
@@ -472,7 +464,6 @@
   }
 }
 
-// Terms Section
 .terms-section {
   margin: 1rem 0;
   padding: 1rem;
@@ -521,7 +512,6 @@
   }
 }
 
-// Buttons
 .register-button {
   --background: linear-gradient(135deg, #f7931e 0%, #ff6b35 100%);
   --border-radius: 14px;
@@ -577,8 +567,6 @@
     font-size: 1.3rem;
   }
 }
-
-// Footer Section
 .footer-section {
   margin-top: auto;
   padding-top: 1.5rem;
@@ -659,7 +647,7 @@
   }
 }
 
-// Partículas decorativas
+// cosas que caen por la pantalla
 .decoration-particle {
   position: absolute;
   font-size: 2.5rem;
@@ -693,7 +681,7 @@
   }
 }
 
-// Animations
+// animaciones
 @keyframes fadeIn {
   from {
     opacity: 0;

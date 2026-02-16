@@ -68,7 +68,6 @@ export class LoginPagePage implements OnInit {
     private authService: AuthService,
     private router: Router,
   ) {
-    // Registrar iconos
     addIcons({
       trophy,
       logInOutline,
@@ -98,6 +97,7 @@ export class LoginPagePage implements OnInit {
     }
   }
 
+  // iniciar sesión
   async onLogin() {
     this.error = null;
     if (this.loginForm.invalid) return;

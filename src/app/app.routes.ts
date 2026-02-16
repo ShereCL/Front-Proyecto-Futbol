@@ -60,6 +60,22 @@ export const routes: Routes = [
   },
 
   {
+    path: 'team/:name',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/team-detail/team-detail.page').then(
+        (m) => m.TeamDetailPage,
+      ),
+  },
+
+  {
+    path: 'chats/:matchId',
+    canActivate: [authGuard],
+    loadComponent: () =>
+      import('./pages/chats/chats.page').then((m) => m.ChatsPage),
+  },
+
+  {
     path: 'home',
     redirectTo: 'tabs/matches',
     pathMatch: 'full',

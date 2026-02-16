@@ -14,7 +14,7 @@ export class LeagueService {
 
   constructor(private http: HttpClient) {}
 
-  // Obtener la clasificación de la liga
+  // clasificación de la liga
   getStandings(): Observable<StandingWithPosition[]> {
     return this.http
       .get<Standing[]>(`${this.apiUrl}/api/league/standings`)
@@ -36,7 +36,7 @@ export class LeagueService {
     );
   }
 
-  // Obtener los máximos goleadores de la liga
+  //obtengo los que mas goles han marcado
   getTopScorers(): Observable<Player[]> {
     return this.http.get<Player[]>(`${this.apiUrl}/api/players/top-scorers`);
   }

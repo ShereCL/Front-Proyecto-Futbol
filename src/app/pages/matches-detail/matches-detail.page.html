@@ -13,13 +13,10 @@
 </ion-header>
 
 <ion-content [fullscreen]="true" class="match-detail-content">
-  <!-- Fondo de estadio -->
   <div class="stadium-background">
     <div class="field-pattern"></div>
     <div class="lights-effect"></div>
   </div>
-
-  <!-- Loading State -->
   <div *ngIf="loading" class="loading-container">
     <div class="loading-wrapper">
       <div class="stadium-loader">
@@ -30,12 +27,9 @@
     </div>
   </div>
 
-  <!-- Match Detail -->
   <div *ngIf="!loading && match" class="match-detail-container">
-    <!-- Match Header Card - Estilo marcador de estadio -->
     <ion-card class="match-header-card">
       <div class="scoreboard-top"></div>
-
       <ion-card-header>
         <div class="match-status-bar">
           <ion-badge
@@ -55,9 +49,7 @@
           </ion-badge>
         </div>
       </ion-card-header>
-
       <ion-card-content class="scoreboard-content">
-        <!-- Teams and Score - Estilo marcador -->
         <div class="match-teams">
           <div class="team home-team">
             <div class="team-shield-container">
@@ -71,7 +63,6 @@
             </div>
             <h2 class="team-name">{{ match.home }}</h2>
           </div>
-
           <div class="score-display">
             <div class="score-wrapper">
               <div class="score-background"></div>
@@ -82,7 +73,6 @@
               </h1>
             </div>
           </div>
-
           <div class="team away-team">
             <div class="team-shield-container">
               <div class="shield-glow away-glow"></div>
@@ -99,7 +89,6 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Betting Form (Only if match is pending and user hasn't bet) -->
     <ion-card *ngIf="canBet()" class="bet-card">
       <div class="card-accent-bar"></div>
       <ion-card-header>
@@ -111,7 +100,6 @@
           <span>Haz tu Pronóstico</span>
         </ion-card-title>
       </ion-card-header>
-
       <ion-card-content>
         <div class="bet-form">
           <div class="bet-input-group">
@@ -128,11 +116,9 @@
               </ion-input>
             </div>
           </div>
-
           <div class="bet-separator">
             <div class="separator-circle">-</div>
           </div>
-
           <div class="bet-input-group">
             <ion-label class="bet-team-label">{{ match.away }}</ion-label>
             <div class="input-wrapper">
@@ -148,7 +134,6 @@
             </div>
           </div>
         </div>
-
         <ion-button
           expand="block"
           (click)="submitBet()"
@@ -160,7 +145,6 @@
           <span *ngIf="isBetting">Apostando...</span>
           <div class="button-shine"></div>
         </ion-button>
-
         <div class="bet-info">
           <div class="info-icon">
             <ion-icon name="trophy-outline"></ion-icon>
@@ -179,7 +163,6 @@
       </ion-card-content>
     </ion-card>
 
-    <!-- Bet Already Placed -->
     <ion-card
       *ngIf="hasBet && match.status === 'pending'"
       class="bet-placed-card"
@@ -208,6 +191,38 @@
       </ion-card-content>
     </ion-card>
 
+    <!--  aqui está el chat de cada partido  -->
+    <ion-card class="chat-access-card">
+      <div class="card-accent-bar chat-accent"></div>
+
+      <ion-card-header>
+        <ion-card-title class="chat-card-title">
+          <div class="title-icon chat-icon">
+            <ion-icon name="chatbubbles"></ion-icon>
+            <div class="icon-shine"></div>
+          </div>
+          <span>Chat del Partido</span>
+          <div class="live-chat-badge" *ngIf="match.status === 'live'">
+            <span class="pulse-dot"></span>
+            <span>EN VIVO</span>
+          </div>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="chat-description">
+          <ion-icon name="people-outline"></ion-icon>
+          <p>Comenta el partido en tiempo real con otros usuarios</p>
+        </div>
+
+        <ion-button expand="block" class="chat-button" (click)="openChat()">
+          <ion-icon name="chatbubbles" slot="start"></ion-icon>
+          Unirse al Chat
+          <ion-icon name="chevron-forward" slot="end"></ion-icon>
+          <div class="button-shine"></div>
+        </ion-button>
+      </ion-card-content>
+    </ion-card>
     <ion-card
       *ngIf="match.events && match.events.length > 0"
       class="events-card"
@@ -219,7 +234,6 @@
           Cronología del Partido
         </ion-card-title>
       </ion-card-header>
-
       <ion-card-content>
         <ion-list lines="none" class="events-list">
           <ion-item
@@ -248,8 +262,6 @@
         </ion-list>
       </ion-card-content>
     </ion-card>
-
-    <!-- No hay eventos mensaje -->
     <ion-card
       *ngIf="!match.events || match.events.length === 0"
       class="no-events-card"
@@ -266,8 +278,6 @@
       </ion-card-content>
     </ion-card>
   </div>
-
-  <!-- error -->
   <div *ngIf="!loading && !match" class="error-container">
     <div class="error-content">
       <div class="error-icon-wrapper">

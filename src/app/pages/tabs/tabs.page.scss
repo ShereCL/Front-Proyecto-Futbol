@@ -1,5 +1,3 @@
-// src/app/tabs/tabs.page.scss
-
 ion-tab-bar {
   --background: linear-gradient(180deg, #ffffff 0%, #f8f9ff 100%);
   --border: 0;
@@ -40,7 +38,6 @@ ion-tab-button {
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   position: relative;
 
-  // Indicador de estadio activo
   &::before {
     content: "";
     position: absolute;
@@ -69,7 +66,6 @@ ion-tab-button {
     text-transform: uppercase;
   }
 
-  // Selected state - Jugador activo
   &.tab-selected {
     &::before {
       transform: translateX(-50%) scaleX(1);
@@ -87,7 +83,6 @@ ion-tab-button {
       font-weight: 700;
     }
 
-    // Efecto de gol al seleccionar
     &::after {
       content: "";
       position: absolute;
@@ -107,7 +102,6 @@ ion-tab-button {
     }
   }
 
-  // Hover effect (desktop) - Pre-calentamiento
   &:hover:not(.tab-selected) {
     --color: #00254d;
 
@@ -121,7 +115,6 @@ ion-tab-button {
     }
   }
 
-  // Active/Press effect - Toque de balón
   &:active {
     ion-icon {
       transform: scale(0.95);
@@ -129,7 +122,6 @@ ion-tab-button {
   }
 }
 
-// Animación específica para cada tab
 ion-tab-button[tab="matches"] {
   ion-icon {
     animation: spinBall 3s linear infinite;
@@ -158,7 +150,6 @@ ion-tab-button[tab="ranking"] {
   }
 }
 
-// Animations
 @keyframes tabBounce {
   0%,
   100% {
@@ -223,7 +214,6 @@ ion-tab-button[tab="ranking"] {
   }
 }
 
-// Responsive adjustments
 @media (max-width: 576px) {
   ion-tab-bar {
     height: 65px;
@@ -246,7 +236,6 @@ ion-tab-button[tab="ranking"] {
   }
 }
 
-// Dark mode support (si lo implemento)
 @media (prefers-color-scheme: dark) {
   ion-tab-bar {
     --background: linear-gradient(180deg, #1a202c 0%, #2d3748 100%);

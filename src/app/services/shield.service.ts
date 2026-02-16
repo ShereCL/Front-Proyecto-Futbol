@@ -32,13 +32,14 @@ export class ShieldService {
   getShield(teamName: string): string {
     if (!teamName) return 'assets/escudos/betis.png';
 
-    // Normalizamos el nombre: minúsculas + quitar acentos + quitar espacios
     const key = teamName
       .toLowerCase()
       .normalize('NFD')
-      .replace(/[\u0300-\u036f]/g, '') // Quita acentos
-      .replace(/\s+/g, ''); // Quita espacios
+      .replace(/[\u0300-\u036f]/g, '')
+      .replace(/\s+/g, '');
 
     return this.shieldsMap[key] || 'assets/escudos/betis.png';
   }
 }
+
+//Este servicio es para obtener los escudos de los equipos y poder usarlos en la app, basicamente mapeo las rutas de los escudos con los nombres de los equipos

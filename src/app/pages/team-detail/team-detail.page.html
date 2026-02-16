@@ -1,0 +1,110 @@
+<ion-header>
+  <ion-toolbar class="team-detail-toolbar">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/tabs/league"></ion-back-button>
+    </ion-buttons>
+    <ion-title>
+      <ion-icon name="shield-checkmark"></ion-icon>
+      {{ teamName }}
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content [fullscreen]="true" class="team-detail-content">
+  <div class="team-pattern">
+    <div class="ball-glow"></div>
+  </div>
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-wrapper">
+      <div class="team-loader">
+        <div class="loader-shield">🛡️</div>
+        <div class="loader-shadow"></div>
+      </div>
+      <p>Cargando plantilla...</p>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="team-container">
+    <div class="team-header">
+      <div class="shield-container">
+        <div class="shield-background">
+          <img
+            [src]="getTeamShield(teamName)"
+            [alt]="teamName"
+            (error)="onImageError($event)"
+            class="main-shield-img"
+          />
+        </div>
+        <div class="shield-rays"></div>
+      </div>
+      <h2>{{ teamName }}</h2>
+      <p>Plantilla Oficial</p>
+    </div>
+    <ion-card class="team-info-card">
+      <div class="card-top-accent"></div>
+      <ion-card-header>
+        <ion-card-title>
+          <ion-icon name="people"></ion-icon>
+          <span>Información del Equipo</span>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <div class="info-grid">
+          <div class="info-item">
+            <ion-icon name="people-outline"></ion-icon>
+            <div class="info-text">
+              <span class="info-label">Total Jugadores</span>
+              <strong>{{ players.length }}</strong>
+            </div>
+          </div>
+          <div class="info-item">
+            <ion-icon name="football-outline"></ion-icon>
+            <div class="info-text">
+              <span class="info-label">Total Goles</span>
+              <strong>{{ getTotalGoals() }}</strong>
+            </div>
+          </div>
+        </div>
+      </ion-card-content>
+    </ion-card>
+    <ion-card class="players-card">
+      <div class="card-top-accent"></div>
+      <ion-card-header>
+        <ion-card-title class="players-title">
+          <ion-icon name="list-outline"></ion-icon>
+          <span>Plantilla Completa</span>
+        </ion-card-title>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list lines="none" class="players-list">
+          <ion-item
+            *ngFor="let player of players; let i = index"
+            class="player-item"
+            [style.animation-delay]="i * 0.05 + 's'"
+          >
+            <div class="player-indicator"></div>
+            <div class="avatar-wrapper" slot="start">
+              <div class="avatar-icon">
+                <ion-icon name="person"></ion-icon>
+              </div>
+              <div class="avatar-shine"></div>
+            </div>
+            <ion-label>
+              <h2>{{ player.name }}</h2>
+              <p>{{ player.team_name }}</p>
+            </ion-label>
+            <div class="player-stats" slot="end">
+              <ion-badge class="goals-badge">
+                <ion-icon name="football"></ion-icon>
+                <span>{{ player.goals }}</span>
+              </ion-badge>
+            </div>
+          </ion-item>
+        </ion-list>
+        <div *ngIf="players.length === 0" class="empty-state">
+          <ion-icon name="people-outline"></ion-icon>
+          <h3>No hay jugadores</h3>
+          <p>Este equipo aún no tiene jugadores registrados</p>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</ion-content>

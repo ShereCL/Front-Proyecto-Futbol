@@ -1,13 +1,173 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>ranking</ion-title>
+<ion-header>
+  <ion-toolbar class="ranking-toolbar">
+    <ion-title>
+      <ion-icon name="trophy"></ion-icon>
+      Ranking Global
+    </ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">ranking</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content [fullscreen]="true" class="ranking-content">
+  <div class="ranking-pattern">
+    <div class="podium-glow"></div>
+  </div>
+
+  <div *ngIf="loading" class="loading-container">
+    <div class="loading-wrapper">
+      <div class="ranking-loader">
+        <div class="loader-trophy">🏆</div>
+        <div class="loader-shadow"></div>
+      </div>
+      <p>Cargando clasificación...</p>
+    </div>
+  </div>
+  <div *ngIf="!loading" class="ranking-container">
+    <div class="ranking-header">
+      <div class="trophy-container">
+        <ion-icon name="trophy" class="main-trophy"></ion-icon>
+        <div class="trophy-rays"></div>
+      </div>
+      <h2>CLASIFICACIÓN</h2>
+      <p>Top Usuarios</p>
+    </div>
+    <div class="podium-section" *ngIf="users.length >= 3">
+      <div class="podium-wrapper">
+        <div class="podium-card second-place" *ngIf="users[1]">
+          <div class="position-crown">
+            <ion-icon name="medal"></ion-icon>
+          </div>
+          <div class="user-avatar-large">
+            <img
+              [src]="users[1].avatarUrl || 'assets/avatar-default.png'"
+              [alt]="users[1].username"
+              onerror="this.src = 'assets/avatar-default.png'"
+            />
+            <div class="avatar-ring silver"></div>
+          </div>
+          <div class="user-info">
+            <h3>{{ users[1].username }}</h3>
+            <div class="position-badge silver">
+              <span class="position-number">2</span>
+            </div>
+          </div>
+          <div class="score-display">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ users[1].points }} pts</span>
+          </div>
+        </div>
+        <div class="podium-card first-place" *ngIf="users[0]">
+          <div class="position-crown champion">
+            <ion-icon name="trophy"></ion-icon>
+          </div>
+          <div class="user-avatar-large">
+            <img
+              [src]="users[0].avatarUrl || 'assets/avatar-default.png'"
+              [alt]="users[0].username"
+              onerror="this.src = 'assets/avatar-default.png'"
+            />
+            <div class="avatar-ring gold"></div>
+          </div>
+          <div class="user-info">
+            <h3>{{ users[0].username }}</h3>
+            <div class="position-badge gold">
+              <span class="position-number">1</span>
+            </div>
+          </div>
+          <div class="score-display">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ users[0].points }} pts</span>
+          </div>
+        </div>
+        <div class="podium-card third-place" *ngIf="users[2]">
+          <div class="position-crown">
+            <ion-icon name="medal"></ion-icon>
+          </div>
+          <div class="user-avatar-large">
+            <img
+              [src]="users[2].avatarUrl || 'assets/avatar-default.png'"
+              [alt]="users[2].username"
+              onerror="this.src = 'assets/avatar-default.png'"
+            />
+            <div class="avatar-ring bronze"></div>
+          </div>
+          <div class="user-info">
+            <h3>{{ users[2].username }}</h3>
+            <div class="position-badge bronze">
+              <span class="position-number">3</span>
+            </div>
+          </div>
+          <div class="score-display">
+            <ion-icon name="star"></ion-icon>
+            <span>{{ users[2].points }} pts</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ion-card class="ranking-list-card" *ngIf="users.length > 3">
+      <div class="card-top-accent"></div>
+
+      <ion-card-header>
+        <ion-card-title class="list-title">
+          <ion-icon name="list-outline"></ion-icon>
+          <span>Clasificación Completa</span>
+        </ion-card-title>
+      </ion-card-header>
+
+      <ion-card-content>
+        <div class="table-header">
+          <div class="pos">#</div>
+          <div class="user">Usuario</div>
+          <div class="points">Puntos</div>
+        </div>
+        <ion-list lines="none" class="ranking-list">
+          <ion-item
+            *ngFor="let user of users; let i = index"
+            class="ranking-item"
+            [class.top-ten]="i < 10"
+            [style.animation-delay]="i * 0.03 + 's'"
+          >
+            <div class="ranking-indicator"></div>
+
+            <div class="ranking-row">
+              <div class="pos">
+                <div
+                  class="position-badge"
+                  [class.top-position]="i < 3"
+                  [class.gold]="i === 0"
+                  [class.silver]="i === 1"
+                  [class.bronze]="i === 2"
+                >
+                  <span class="position-number">{{ i + 1 }}</span>
+                </div>
+              </div>
+              <div class="user">
+                <div class="avatar-wrapper">
+                  <ion-avatar>
+                    <img
+                      [src]="user.avatarUrl || 'assets/avatar-default.png'"
+                      [alt]="user.username"
+                      onerror="this.src = 'assets/avatar-default.png'"
+                    />
+                  </ion-avatar>
+                  <div class="avatar-shine"></div>
+                </div>
+                <span class="user-name">{{ user.username }}</span>
+              </div>
+              <div class="points">
+                <div class="points-badge">
+                  <ion-icon name="star"></ion-icon>
+                  <strong>{{ user.points }}</strong>
+                </div>
+              </div>
+            </div>
+          </ion-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+    <div *ngIf="users.length === 0" class="empty-state">
+      <ion-icon name="people-outline"></ion-icon>
+      <h3>No hay datos</h3>
+      <p>Aún no hay usuarios en el ranking</p>
+    </div>
+  </div>
 </ion-content>

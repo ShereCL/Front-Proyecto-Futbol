@@ -62,6 +62,7 @@ export class MatchesPage implements OnInit {
     setInterval(() => this.loadMatches(), 20000);
   }
 
+  //cargar los partidos
   loadMatches() {
     this.soccerService.getMatches().subscribe({
       next: (data) => {
@@ -79,6 +80,7 @@ export class MatchesPage implements OnInit {
     });
   }
 
+  //obtener el color del estado dependiendo de en que estado se encuentra el partido
   getStatusColor(status: string): string {
     switch (status) {
       case 'pending':
@@ -92,6 +94,7 @@ export class MatchesPage implements OnInit {
     }
   }
 
+  //lo mismo pero para el texto
   getStatusText(status: string): string {
     switch (status) {
       case 'pending':
@@ -105,6 +108,7 @@ export class MatchesPage implements OnInit {
     }
   }
 
+  //funcion para ir a la pantalla de apuestas
   onBet(match: Match) {
     console.log('Apostar en partido:', match);
   }
@@ -114,11 +118,12 @@ export class MatchesPage implements OnInit {
     img.src = 'assets/escudos/betis.png';
   }
 
+  //funcion para obtener el escudo de un equipo
   getTeamShield(teamName: string): string {
     return this.shieldService.getShield(teamName);
   }
 
-  //Eventos
+  //iconos de los eventos (básicamente los goles por que el resto no se usa, quería meter tarjetas y demás pero no me dio tiempo)
   getEventIcon(type: string): string {
     switch (type.toLowerCase()) {
       case 'goal':
@@ -134,6 +139,7 @@ export class MatchesPage implements OnInit {
     }
   }
 
+  //esta es para el texto de un evento
   getEventText(type: string): string {
     switch (type.toLowerCase()) {
       case 'goal':
@@ -149,14 +155,17 @@ export class MatchesPage implements OnInit {
     }
   }
 
+  //color del evento
   getEventColor(team: string, homeTeam: string): string {
     return team === homeTeam ? 'warning' : 'success';
   }
 
+  //ir a la pantalla de detalle de un partido
   goToMatchDetail(matchId: number) {
     this.router.navigate(['/matches', matchId]);
   }
 
+  //icono del estado
   getStatusIcon(status: string): string {
     switch (status) {
       case 'pending':

@@ -1,25 +1,46 @@
-// src/app/services/chat.service.ts
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
-import { environment } from '../../environments/environment';
-import { ChatMessage } from '../model/chat-message.model';
+import { Observable, interval } from 'rxjs';
+import { switchMap, startWith } from 'rxjs/operators';
+import { environment } from 'src/environments/environment';
+import { Message } from '../model/chat-message.model';
 
-@Injectable({ providedIn: 'root' })
+@Injectable({
+  providedIn: 'root',
+})
 export class ChatService {
-  private apiUrl = environment.apiUrl;
-
   constructor(private http: HttpClient) {}
 
-  // Obtener mensajes de un partido
-  getMessages(matchId: number) {
-    return this.http.get<ChatMessage[]>(`${this.apiUrl}/messages/${matchId}`);
+  //recibir mensajes
+  getMessages(matchId: number): Observable<Message[]> {
+    return this.http.get<Message[]>(
+      `${environment.apiUrl}/api/messages/${matchId}`,
+    );
   }
 
-  // Enviar mensaje
-  sendMessage(matchId: number, message: { text: string }) {
-    return this.http.post<ChatMessage>(
-      `${this.apiUrl}/messages/${matchId}`,
-      message,
+  //enviar mensaje
+  sendMessage(
+    matchId: number,
+    username: string,
+    text: string,
+  ): Observable<Message> {
+    const payload = {
+      matchId: matchId,
+      username: username,
+      text: text,
+    };
+
+    return this.http.post<Message>(
+      `${environment.apiUrl}/api/messages`,
+      payload,
+    );
+  }
+
+  //cada cinco segundos se actualiza el chat
+  getMessagesPolling(matchId: number): Observable<Message[]> {
+    return interval(5000).pipe(
+      startWith(0),
+      switchMap(() => this.getMessages(matchId)),
     );
   }
 }

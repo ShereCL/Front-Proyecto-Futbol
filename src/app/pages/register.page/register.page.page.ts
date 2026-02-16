@@ -105,7 +105,7 @@ export class RegisterPagePage implements OnInit {
     this.updateAvatarPreview();
   }
 
-  // Actualizar preview del avatar cuando cambia username o email
+  // actualizar la previsualizacion del avatar cuando cambia el usuario
   onUsernameChange() {
     this.updateAvatarPreview();
   }
@@ -139,7 +139,7 @@ export class RegisterPagePage implements OnInit {
     }
   }
 
-  // Método para calcular la fuerza de la contraseña
+  // Método para calcular la fuerza de la contraseña, si es debil, media o fuerte y luego con el html y scss creo como una barra
   getPasswordStrength(): 'weak' | 'medium' | 'strong' {
     const password = this.registerForm.get('password')?.value || '';
     if (password.length === 0) return 'weak';
@@ -164,6 +164,7 @@ export class RegisterPagePage implements OnInit {
     return 'strong';
   }
 
+  // Método para obtener el texto de la fuerza de la contraseña
   getPasswordStrengthText(): string {
     const strength = this.getPasswordStrength();
     const texts = {

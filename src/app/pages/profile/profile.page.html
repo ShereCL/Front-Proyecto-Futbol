@@ -1,18 +1,22 @@
 <ion-header>
   <ion-toolbar class="profile-toolbar">
     <ion-title>
-      <ion-icon name="person-circle-outline"></ion-icon>
-      Mi Perfil
+      <ion-avatar class="header-avatar">
+        <img
+          [src]="currentUser?.avatarUrl || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User') + '&background=ff6b35&color=fff&size=128'"
+          [alt]="currentUser?.username"
+          (error)="onImageError($event)"
+        />
+      </ion-avatar>
+      <span>Mi Perfil</span>
     </ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true" class="profile-content">
-  <!-- Fondo de césped -->
   <div class="grass-background"></div>
 
   <div class="profile-container">
-    <!-- Header del usuario - Estilo tarjeta de jugador -->
     <ion-card class="user-header-card">
       <div class="card-design-pattern"></div>
       <div class="player-card-shine"></div>
@@ -20,7 +24,7 @@
       <ion-card-content>
         <div class="user-header">
           <div class="avatar-wrapper">
-            <ion-avatar class="user-avatar" (click)="changeAvatar()">
+            <ion-avatar class="user-avatar">
               <img
                 [src]="currentUser?.avatarUrl || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User') + '&background=ff6b35&color=fff&size=256'"
                 [alt]="currentUser?.username"
@@ -28,9 +32,6 @@
               />
             </ion-avatar>
             <div class="avatar-ring"></div>
-            <div class="edit-icon">
-              <ion-icon name="camera"></ion-icon>
-            </div>
           </div>
 
           <div class="user-info">
@@ -43,8 +44,6 @@
             </div>
           </div>
         </div>
-
-        <!-- Puntos destacados - Estilo marcador -->
         <div class="points-showcase">
           <div class="points-badge">
             <div class="trophy-icon-wrapper">
@@ -59,8 +58,6 @@
         </div>
       </ion-card-content>
     </ion-card>
-
-    <!-- Segmentos con diseño de botones de estadio -->
     <ion-segment
       [value]="selectedSegment"
       (ionChange)="segmentChanged($event)"
@@ -83,10 +80,7 @@
         <div class="segment-indicator"></div>
       </ion-segment-button>
     </ion-segment>
-
-    <!-- Contenido según segmento -->
     <div [ngSwitch]="selectedSegment" class="segment-content">
-      <!-- INFORMACIÓN -->
       <div *ngSwitchCase="'info'">
         <ion-card class="info-card">
           <div class="card-top-line"></div>
@@ -130,8 +124,6 @@
             </ion-list>
           </ion-card-content>
         </ion-card>
-
-        <!-- Botón cerrar sesión -->
         <ion-card class="logout-card">
           <ion-card-content>
             <ion-button
@@ -146,10 +138,7 @@
           </ion-card-content>
         </ion-card>
       </div>
-
-      <!-- APUESTAS -->
       <div *ngSwitchCase="'bets'">
-        <!-- Loading -->
         <div class="loading-container" *ngIf="loading">
           <div class="stadium-loader">
             <div class="loader-ball">⚽</div>
@@ -157,8 +146,6 @@
           </div>
           <p>Cargando apuestas...</p>
         </div>
-
-        <!-- Sin apuestas -->
         <ion-card *ngIf="!loading && bets.length === 0" class="empty-bets-card">
           <ion-card-content>
             <div class="empty-state">
@@ -179,8 +166,6 @@
             </div>
           </ion-card-content>
         </ion-card>
-
-        <!-- Lista de apuestas -->
         <ion-card *ngFor="let bet of bets" class="bet-card-list">
           <div class="bet-card-accent"></div>
           <ion-card-content>
@@ -259,8 +244,6 @@
           </ion-card-content>
         </ion-card>
       </div>
-
-      <!-- ESTADÍSTICAS -->
       <div *ngSwitchCase="'stats'">
         <ion-card class="stats-main-card">
           <div class="card-top-line"></div>

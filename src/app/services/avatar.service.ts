@@ -1,4 +1,3 @@
-// src/app/services/avatar.service.ts
 import { Injectable } from '@angular/core';
 
 export type AvatarStyle =

@@ -36,18 +36,9 @@
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import "@ionic/angular/css/palettes/dark.system.css";
 
-// src/global.scss - Agregar estos estilos al final del archivo
+// ESTILOS PARA LOS ALERTS Y LOS TOAST DE LA APP //
 
 //Alerts personalizados
-
-// src/global.scss - Agregar estos estilos al final del archivo
-
-//Alert y toast estilos globales
-
-//Alerts personalizados
-// ===================================
-// ALERTS PREMIUM - Estilos Globales
-// ===================================
 
 .bet-alert-premium {
   --backdrop-opacity: 0.65;
@@ -172,9 +163,7 @@
   }
 }
 
-// ===================================
-// TOASTS GLOBALES
-// ===================================
+//Toasts globales para que se vean bonitos
 
 .custom-toast {
   --border-radius: 12px;

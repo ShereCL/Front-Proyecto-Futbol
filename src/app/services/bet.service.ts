@@ -14,6 +14,7 @@ export class BetService {
 
   constructor(private http: HttpClient) {}
 
+  //apostar
   placeBet(bet: {
     matchId: number;
     homeScore: number;
@@ -31,6 +32,7 @@ export class BetService {
     );
   }
 
+  //oapuestas para un partido
   getBetForMatch(matchId: number): Observable<Bet | null> {
     return from(this.getUserId()).pipe(
       switchMap((userId) =>
@@ -45,6 +47,7 @@ export class BetService {
     );
   }
 
+  //obtener apuestas del usuario
   getUserBets(): Observable<Bet[]> {
     return from(this.getUserId()).pipe(
       switchMap((userId) =>
@@ -53,16 +56,12 @@ export class BetService {
     );
   }
 
+  //obtener id del usuario
   private async getUserId(): Promise<number> {
     const result = await Preferences.get({ key: 'user' });
     if (result.value) {
       const storedData = JSON.parse(result.value);
-      console.log('👤 Datos guardados:', storedData);
-
       const userData = storedData.user || storedData;
-
-      console.log('👤 Usuario extraído:', userData);
-      console.log('🆔 ID del usuario:', userData.id);
 
       if (!userData.id) {
         throw new Error('No se encontró el ID del usuario');

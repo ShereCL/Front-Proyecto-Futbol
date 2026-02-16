@@ -80,7 +80,7 @@ export class ProfilePage implements OnInit {
   loading = true;
   selectedSegment: 'info' | 'bets' | 'stats' = 'info';
 
-  // Estadísticas
+  // estadísticas del jugador
   stats = {
     totalBets: 0,
     wonBets: 0,
@@ -122,6 +122,7 @@ export class ProfilePage implements OnInit {
     await this.loadUserBets();
   }
 
+  //cargar perfil del usuario
   async loadUserProfile() {
     try {
       this.currentUser = await this.authService.getCurrentUser();
@@ -130,6 +131,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  //cargar apuestas del usuario
   async loadUserBets() {
     this.loading = true;
     this.betService.getUserBets().subscribe({
@@ -139,12 +141,12 @@ export class ProfilePage implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error cargando apuestas:', err);
         this.loading = false;
       },
     });
   }
 
+  //calcular las estadísticas del usuario
   calculateStats(bets: any[]) {
     this.stats.totalBets = bets.length;
     this.stats.wonBets = bets.filter((b) => b.status === 'win').length;
@@ -164,16 +166,19 @@ export class ProfilePage implements OnInit {
     this.selectedSegment = event.detail.value;
   }
 
+  //obtener escudo de la liga
   getTeamShield(teamName: string): string {
     return this.shieldService.getShield(teamName);
   }
 
+  //esto es para cuando la imagen no se carga
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.src =
       'https://ui-avatars.com/api/?name=User&background=3880ff&color=fff';
   }
 
+  //estado de la apuesta
   getStatusColor(status: string): string {
     switch (status) {
       case 'win':
@@ -187,6 +192,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  //icono de la apuesta
   getStatusIcon(status: string): string {
     switch (status) {
       case 'win':
@@ -200,6 +206,7 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  //texto de la apuesta
   getStatusText(status: string): string {
     switch (status) {
       case 'win':
@@ -213,24 +220,17 @@ export class ProfilePage implements OnInit {
     }
   }
 
+  //ver detalle de la apuesta
   viewMatchDetail(bet: any) {
     if (bet.match?.id) {
       this.router.navigate(['/matches', bet.match.id]);
     }
   }
 
-  async changeAvatar() {
-    const toast = await this.toastController.create({
-      message: 'Función de cambio de avatar próximamente',
-      duration: 2000,
-      color: 'primary',
-      position: 'bottom',
-    });
-    await toast.present();
-  }
-
+  //cerrar sesion
   async handleLogout() {
     const alert = await this.alertController.create({
+      cssClass: 'bet-alert-premium',
       header: '¿Cerrar sesión?',
       message: '¿Estás seguro de que quieres salir?',
       buttons: [

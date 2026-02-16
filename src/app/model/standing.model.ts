@@ -10,7 +10,7 @@ export interface Standing {
   pts: number;
 }
 
-// Interfaz auxiliar para mostrar posición
+// Interfaz auxiliar para mostrar la posición
 export interface StandingWithPosition extends Standing {
   position: number;
   diferencia: number;

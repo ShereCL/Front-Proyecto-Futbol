@@ -88,6 +88,7 @@ export class LeaguePage implements OnInit {
     this.loadStandings();
   }
 
+  //cargo la clasificacion
   loadStandings() {
     this.loading = true;
     this.leagueService.getStandings().subscribe({
@@ -96,12 +97,12 @@ export class LeaguePage implements OnInit {
         this.loading = false;
       },
       error: (err) => {
-        console.error('Error cargando clasificación:', err);
         this.loading = false;
       },
     });
   }
 
+  //refresca la clasificacion
   handleRefresh(event: any) {
     this.leagueService.getStandings().subscribe({
       next: (standings) => {
@@ -114,15 +115,18 @@ export class LeaguePage implements OnInit {
     });
   }
 
+  //obtengo el escudo del equipo
   getTeamShield(teamName: string): string {
     return this.shieldService.getShield(teamName);
   }
 
+  //cambio la imagen del escudo por defecto si no se carga
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
     img.src = 'assets/escudos/betis.png';
   }
 
+  //obtengo el color del equipo
   getPositionColor(position: number): string {
     if (position <= 4) return 'success';
     if (position === 5) return 'primary';
@@ -131,6 +135,7 @@ export class LeaguePage implements OnInit {
     return 'medium';
   }
 
+  //obtengo el badge del equipo segun la posicion, con iconitos chulos pra marcar que es lider, en descenso...
   getPositionBadge(position: number): string {
     if (position <= 4) return '🏆';
     if (position === 5) return '⭐';
@@ -138,7 +143,7 @@ export class LeaguePage implements OnInit {
     if (position >= 18) return '⬇️';
     return '';
   }
-
+  //detalles del equipo, para ver la plantilla y los goles que ha marcado cada uno
   viewTeamDetail(team: StandingWithPosition) {
     this.router.navigate(['/team', team.name]);
   }

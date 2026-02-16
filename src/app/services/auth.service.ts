@@ -139,8 +139,6 @@ export class AuthService {
       if (!currentUser) {
         throw new Error('Usuario no encontrado');
       }
-
-      // Generar avatar con nuevo estilo
       const newAvatarUrl = this.avatarService.generateAvatarUrl(
         currentUser.username,
         style as any,

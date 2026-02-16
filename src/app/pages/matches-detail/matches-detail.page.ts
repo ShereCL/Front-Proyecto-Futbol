@@ -39,6 +39,9 @@ import {
   calendarOutline,
   trophyOutline,
   star,
+  chatbubbles,
+  peopleOutline,
+  chevronForward,
 } from 'ionicons/icons';
 import { SoccerService } from 'src/app/services/soccer.service';
 import { ShieldService } from 'src/app/services/shield.service';
@@ -76,7 +79,7 @@ export class MatchesDetailPage implements OnInit {
   match: Match | null = null;
   loading = true;
 
-  // Formulario de apuesta
+  // formulario para la apuesta
   awayScore: number = 0;
   hasBet: boolean = false;
   isBetting: boolean = false;
@@ -98,6 +101,9 @@ export class MatchesDetailPage implements OnInit {
       checkmarkCircleOutline,
       trophyOutline,
       star,
+      chatbubbles,
+      peopleOutline,
+      chevronForward,
       listOutline,
       alertCircleOutline,
       informationCircleOutline,
@@ -115,6 +121,7 @@ export class MatchesDetailPage implements OnInit {
     this.checkExistingBet(matchId);
   }
 
+  //carga detalles del partido
   loadMatch(id: number) {
     this.soccerService.getMatches().subscribe({
       next: (matches) => {
@@ -147,6 +154,7 @@ export class MatchesDetailPage implements OnInit {
     return this.match?.status === 'pending' && !this.hasBet;
   }
 
+  //enviar apuesta
   async submitBet() {
     if (!this.match) return;
 
@@ -161,7 +169,6 @@ export class MatchesDetailPage implements OnInit {
       return;
     }
 
-    // Confirmar apuesta
     const alert = await this.alertController.create({
       header: '⚽ Confirmar Pronóstico',
       message: `${this.match.home} ${this.homeScore} - ${this.awayScore} ${this.match.away}`,
@@ -185,6 +192,7 @@ export class MatchesDetailPage implements OnInit {
     await alert.present();
   }
 
+  //confirmar apuesta
   confirmBet() {
     if (!this.match) return;
 
@@ -203,15 +211,14 @@ export class MatchesDetailPage implements OnInit {
         this.showToast('¡Apuesta realizada con éxito! 🎯', 'success');
       },
       error: (error) => {
-        console.error('Error creating bet:', error);
         this.isBetting = false;
-
         const errorMsg = error.error?.message || 'Error al realizar la apuesta';
         this.showToast(errorMsg, 'danger');
       },
     });
   }
 
+  //mostrar toast de error o exito
   async showToast(message: string, color: string) {
     const toast = await this.toastController.create({
       message,
@@ -300,10 +307,12 @@ export class MatchesDetailPage implements OnInit {
     }
   }
 
+  //regresar a los partidos
   goBack() {
     this.router.navigate(['/tabs/matches']);
   }
 
+  //depende del estado traigo los iconos
   getStatusIcon(status: string | undefined): string {
     switch (status) {
       case 'pending':
@@ -315,5 +324,15 @@ export class MatchesDetailPage implements OnInit {
       default:
         return 'ellipse-outline';
     }
+  }
+  //abrir el chat
+  openChat() {
+    if (!this.match) return;
+
+    const matchTitle = `${this.match.home} vs ${this.match.away}`;
+
+    this.router.navigate(['/chats', this.match.id], {
+      queryParams: { title: matchTitle },
+    });
   }
 }
