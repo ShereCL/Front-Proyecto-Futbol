@@ -38,9 +38,9 @@
           </div>
           <div class="user-avatar-large">
             <img
-              [src]="users[1].avatarUrl || 'assets/avatar-default.png'"
+              [src]="getUserAvatar(users[1])"
               [alt]="users[1].username"
-              onerror="this.src = 'assets/avatar-default.png'"
+              (error)="onImageError($event, users[1])"
             />
             <div class="avatar-ring silver"></div>
           </div>
@@ -61,9 +61,9 @@
           </div>
           <div class="user-avatar-large">
             <img
-              [src]="users[0].avatarUrl || 'assets/avatar-default.png'"
+              [src]="getUserAvatar(users[0])"
               [alt]="users[0].username"
-              onerror="this.src = 'assets/avatar-default.png'"
+              (error)="onImageError($event, users[0])"
             />
             <div class="avatar-ring gold"></div>
           </div>
@@ -84,9 +84,9 @@
           </div>
           <div class="user-avatar-large">
             <img
-              [src]="users[2].avatarUrl || 'assets/avatar-default.png'"
+              [src]="getUserAvatar(users[2])"
               [alt]="users[2].username"
-              onerror="this.src = 'assets/avatar-default.png'"
+              (error)="onImageError($event, users[2])"
             />
             <div class="avatar-ring bronze"></div>
           </div>
@@ -144,9 +144,9 @@
                 <div class="avatar-wrapper">
                   <ion-avatar>
                     <img
-                      [src]="user.avatarUrl || 'assets/avatar-default.png'"
+                      [src]="getUserAvatar(user)"
                       [alt]="user.username"
-                      onerror="this.src = 'assets/avatar-default.png'"
+                      (error)="onImageError($event, user)"
                     />
                   </ion-avatar>
                   <div class="avatar-shine"></div>

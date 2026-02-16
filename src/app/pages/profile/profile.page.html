@@ -3,7 +3,7 @@
     <ion-title>
       <ion-avatar class="header-avatar">
         <img
-          [src]="currentUser?.avatarUrl || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User') + '&background=ff6b35&color=fff&size=128'"
+          [src]="getUserAvatar(currentUser)"
           [alt]="currentUser?.username"
           (error)="onImageError($event)"
         />
@@ -26,7 +26,7 @@
           <div class="avatar-wrapper">
             <ion-avatar class="user-avatar">
               <img
-                [src]="currentUser?.avatarUrl || 'https://ui-avatars.com/api/?name=' + (currentUser?.username || 'User') + '&background=ff6b35&color=fff&size=256'"
+                [src]="getUserAvatar(currentUser)"
                 [alt]="currentUser?.username"
                 (error)="onImageError($event)"
               />

@@ -45,7 +45,7 @@ export class AvatarService {
   ): string {
     const params = new URLSearchParams();
 
-    params.append('seed', seed);
+    params.append('seed', encodeURIComponent(seed));
 
     if (options?.backgroundColor) {
       params.append('backgroundColor', options.backgroundColor.join(','));

@@ -44,6 +44,7 @@ import {
 import { AuthService } from 'src/app/services/auth.service';
 import { BetService } from 'src/app/services/bet.service';
 import { ShieldService } from 'src/app/services/shield.service';
+import { AvatarService } from 'src/app/services/avatar.service';
 import { User } from 'src/app/model/user.model';
 
 @Component({
@@ -97,6 +98,7 @@ export class ProfilePage implements OnInit {
     private router: Router,
     private alertController: AlertController,
     private toastController: ToastController,
+    private avatarService: AvatarService,
   ) {
     addIcons({
       personCircleOutline,
@@ -115,6 +117,14 @@ export class ProfilePage implements OnInit {
       timeOutline,
       ribbonOutline,
     });
+  }
+
+  getUserAvatar(user: User | null | undefined): string {
+    if (user?.avatarUrl) {
+      return user.avatarUrl;
+    }
+    const seed = user?.username || user?.email || 'User';
+    return this.avatarService.generateAvatarUrl(seed, 'bottts');
   }
 
   async ngOnInit() {
@@ -174,8 +184,9 @@ export class ProfilePage implements OnInit {
   //esto es para cuando la imagen no se carga
   onImageError(event: Event) {
     const img = event.target as HTMLImageElement;
-    img.src =
-      'https://ui-avatars.com/api/?name=User&background=3880ff&color=fff';
+    const seed =
+      this.currentUser?.username || this.currentUser?.email || 'User';
+    img.src = this.avatarService.generateAvatarUrl(seed, 'bottts');
   }
 
   //estado de la apuesta

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { User } from '../../model/user.model';
+import { AvatarService } from '../../services/avatar.service';
 import {
   IonHeader,
   IonToolbar,
@@ -43,7 +44,10 @@ export class RankingPage implements OnInit {
   users: User[] = [];
   loading = true;
 
-  constructor(private userService: UserService) {}
+  constructor(
+    private userService: UserService,
+    private avatarService: AvatarService,
+  ) {}
 
   ngOnInit() {
     this.loadLeaderboard();
@@ -59,5 +63,19 @@ export class RankingPage implements OnInit {
       },
       error: () => (this.loading = false),
     });
+  }
+
+  getUserAvatar(user: User): string {
+    if (user.avatarUrl) {
+      return user.avatarUrl;
+    }
+    const seed = user.username || user.email || 'User';
+    return this.avatarService.generateAvatarUrl(seed, 'bottts');
+  }
+
+  onImageError(event: Event, user: User) {
+    const img = event.target as HTMLImageElement;
+    const seed = user.username || user.email || 'User';
+    img.src = this.avatarService.generateAvatarUrl(seed, 'bottts');
   }
 }
